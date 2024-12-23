@@ -30,9 +30,32 @@ void main(){
     
     sfEvent event;
     myWindow = sfRenderWindow_create(vm, "Game", sfResize | sfClose, NULL);
+    sfRenderWindow_setFramerateLimit(myWindow, 60);
+
+    clock_t start;
+    clock_t end;
+    int diff;
+    
+    void fpsFunc(void* textP){
+        sfTime time = sfSeconds(1.f);
+        int sum = 0;
+        char string[10];
+        while (1){
+            printf("Thread print\n");
+            itoa(sum, string, 10);
+            sfText_setString(text, string);
+            sum++;
+            sfSleep(time);
+        }
+    }
+    
+    sfThread *thread1;
+
+    thread1 = sfThread_create(&fpsFunc, (void *)text);
+    sfThread_launch(thread1);
 
     while (sfRenderWindow_isOpen(myWindow)){
-        clock_t start_t = time(NULL);
+        //start = clock();
         while (sfRenderWindow_pollEvent(myWindow, &event)){
             if (event.type == sfEvtClosed){
                 sfRenderWindow_close(myWindow);
@@ -43,7 +66,7 @@ void main(){
                 scrnSize.x /= 2; scrnSize.y /= 2;
                 sfView_setCenter(view, scrnSize);
                 sfText_setPosition(text, (sfVector2f) {(event.size.width/2)-200,(event.size.height/2)-100});
-                //sfView_zoom(view, ((float)event.size.width/(float)event.size.height)/(1920.f/1080.f));
+                
                 sfRenderWindow_setView(myWindow, view);
             }
         }
@@ -52,6 +75,9 @@ void main(){
         sfRenderWindow_drawText(myWindow, text, NULL);
 
         sfRenderWindow_display(myWindow);
+
+        //end = clock();
+        //printf("time per frame: %dms\n", end-start);
     }
 
     
@@ -59,4 +85,5 @@ void main(){
     sfView_destroy(view);
     sfFont_destroy(marioFont);
     sfRenderWindow_destroy(myWindow);
+    sfThread_terminate(thread1);
 }
