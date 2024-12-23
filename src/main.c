@@ -14,6 +14,9 @@ void fpsFunc(void* textP){
         printf("Thread print\n");
         itoa(sum, string, 10);
         sfText_setString(textP, string);
+        sfFloatRect rc = sfText_getLocalBounds(textP);
+        printf("%f | %f\n", rc.width/2, rc.height/2);
+        sfText_setOrigin(textP, (sfVector2f){rc.width/2, rc.height/2});
         sum++;
         sfSleep(time);
     }
@@ -33,10 +36,18 @@ void main(){
         if (!marioFont)
             return;
     text = sfText_create();
-    sfText_setString(text, "Hello World");
     sfText_setFont(text, marioFont);
     sfText_setCharacterSize(text, 100);
-    sfText_setPosition(text, (sfVector2f) {(WIDTH/2)-200,(HEIGHT/2)-100});
+    sfText_setString(text, "Hello World");
+    
+    
+    
+    
+    sfSleep((sfTime){1000});
+    sfFloatRect rc = sfText_getLocalBounds(text);
+    printf("%f | %f\n", rc.width/2, rc.height/2);
+    sfText_setOrigin(text, (sfVector2f){rc.width/2, rc.height/2});
+    sfText_setPosition(text, (sfVector2f) {WIDTH/2,HEIGHT/2});
     sfText_setColor(text, sfWhite);
     
     sfEvent event;
@@ -67,7 +78,6 @@ void main(){
                 sfView_setSize(view, scrnSize);
                 scrnSize.x /= 2; scrnSize.y /= 2;
                 sfView_setCenter(view, scrnSize);
-                sfText_setPosition(text, (sfVector2f) {(event.size.width/2)-200,(event.size.height/2)-100});
                 
                 sfRenderWindow_setView(myWindow, view);
             }
@@ -76,12 +86,12 @@ void main(){
         if (angle >= 360) {
             angle = 0;
         }
-        sfText_setRotation(text, angle);
+        
+        //sfText_setRotation(text, angle);
 
         sfRenderWindow_clear(myWindow, color);
 
         sfRenderWindow_drawText(myWindow, text, NULL);
-
         sfRenderWindow_display(myWindow);
 
         //end = clock();
