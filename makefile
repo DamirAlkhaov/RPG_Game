@@ -1,8 +1,10 @@
 LIBFLAGS= -l:libcsfml-graphics.a -l:libcsfml-window.a -l:libcsfml-system.a
 CXXFLAGS = -std=c++11
+INCLUDE = -Iinclude/
+SOURCE = src/main.c
 
-all: main.c 
-	gcc -Iinclude/ main.c -o bin/main.exe -Linclude/ $(LIBFLAGS)
+all: $(SOURCE)
+	gcc $(INCLUDE) $(SOURCE) -o bin/main.exe -Linclude/ $(LIBFLAGS)
 
 play:
 	bin/main.exe

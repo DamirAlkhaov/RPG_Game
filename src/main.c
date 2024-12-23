@@ -3,10 +3,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define WIDTH 600
-#define HEIGHT 400
+#define WIDTH 800
+#define HEIGHT 800
 
-
+void fpsFunc(void* textP){
+    sfTime time = sfSeconds(1.f);
+    int sum = 0;
+    char string[10];
+    while (1){
+        printf("Thread print\n");
+        itoa(sum, string, 10);
+        sfText_setString(textP, string);
+        sum++;
+        sfSleep(time);
+    }
+}
 
 void main(){
     sfVideoMode vm = {WIDTH,HEIGHT};
@@ -29,30 +40,21 @@ void main(){
     sfText_setColor(text, sfWhite);
     
     sfEvent event;
-    myWindow = sfRenderWindow_create(vm, "Game", sfResize | sfClose, NULL);
+    myWindow = sfRenderWindow_create(vm, "Game", sfClose, NULL);
     sfRenderWindow_setFramerateLimit(myWindow, 60);
 
     clock_t start;
     clock_t end;
     int diff;
     
-    void fpsFunc(void* textP){
-        sfTime time = sfSeconds(1.f);
-        int sum = 0;
-        char string[10];
-        while (1){
-            printf("Thread print\n");
-            itoa(sum, string, 10);
-            sfText_setString(text, string);
-            sum++;
-            sfSleep(time);
-        }
-    }
+    
     
     sfThread *thread1;
 
     thread1 = sfThread_create(&fpsFunc, (void *)text);
     sfThread_launch(thread1);
+    
+    int angle = 0;
 
     while (sfRenderWindow_isOpen(myWindow)){
         //start = clock();
@@ -70,6 +72,12 @@ void main(){
                 sfRenderWindow_setView(myWindow, view);
             }
         }
+        angle++;
+        if (angle >= 360) {
+            angle = 0;
+        }
+        sfText_setRotation(text, angle);
+
         sfRenderWindow_clear(myWindow, color);
 
         sfRenderWindow_drawText(myWindow, text, NULL);
