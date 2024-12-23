@@ -39,11 +39,6 @@ void main(){
     sfText_setFont(text, marioFont);
     sfText_setCharacterSize(text, 100);
     sfText_setString(text, "Hello World");
-    
-    
-    
-    
-    sfSleep((sfTime){1000});
     sfFloatRect rc = sfText_getLocalBounds(text);
     printf("%f | %f\n", rc.width/2, rc.height/2);
     sfText_setOrigin(text, (sfVector2f){rc.width/2, rc.height/2});
