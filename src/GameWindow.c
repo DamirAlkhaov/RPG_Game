@@ -8,7 +8,7 @@ void createMainWindow(sfRenderWindow* myWindow){
     
     sfEvent event;
     myWindow = sfRenderWindow_create(vm, "Game", sfClose, NULL);
-    sfRenderWindow_setFramerateLimit(myWindow, 60);
+    sfRenderWindow_setVerticalSyncEnabled(myWindow, (sfBool)1);
 
     while (sfRenderWindow_isOpen(myWindow)){
         while (sfRenderWindow_pollEvent(myWindow, &event)){
