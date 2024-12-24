@@ -1,4 +1,5 @@
 #include "GameWindow.h"
+#include "GameLoop.h"
 #define WIDTH 800
 #define HEIGHT 800
 
@@ -10,7 +11,12 @@ void createMainWindow(sfRenderWindow* myWindow){
     myWindow = sfRenderWindow_create(vm, "Game", sfClose, NULL);
     sfRenderWindow_setVerticalSyncEnabled(myWindow, (sfBool)1);
 
+    sfClock *cl = sfClock_create();
+    sfTime elapsed;
+
     while (sfRenderWindow_isOpen(myWindow)){
+        elapsed = sfClock_restart(cl);
+        //window events
         while (sfRenderWindow_pollEvent(myWindow, &event)){
             if (event.type == sfEvtClosed){
                 sfRenderWindow_close(myWindow);
@@ -25,8 +31,13 @@ void createMainWindow(sfRenderWindow* myWindow){
             }
         }
 
+        //Game update
+        update(elapsed);
+
+        //buffer
         sfRenderWindow_clear(myWindow, sfBlack);
 
+        //display
         sfRenderWindow_display(myWindow);
     }
 
