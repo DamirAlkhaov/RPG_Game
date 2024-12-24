@@ -1,5 +1,5 @@
 #include "GameTile.h"
-#define MAP_SIZE 100
+#define MAP_SIZE 10
 
 typedef struct gameMap {
     GameTile *tiles[MAP_SIZE][MAP_SIZE];
@@ -7,3 +7,4 @@ typedef struct gameMap {
 } GameMap;
 
 void GameMap_Init(GameMap *gameMap);
+void GameMap_Destroy(GameMap *gameMap);

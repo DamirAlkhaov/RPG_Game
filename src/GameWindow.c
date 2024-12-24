@@ -64,4 +64,5 @@ void createMainWindow(sfRenderWindow* myWindow){
     
     sfView_destroy(view);
     sfRenderWindow_destroy(myWindow);
+    GameMap_Destroy(&map);
 }
