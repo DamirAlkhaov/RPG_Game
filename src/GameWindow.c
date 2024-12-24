@@ -38,7 +38,7 @@ void createMainWindow(sfRenderWindow* myWindow){
         }
 
         //Game update
-        update(elapsed);
+        update(myWindow, elapsed);
 
         //buffer
         sfRenderWindow_clear(myWindow, sfBlack);
