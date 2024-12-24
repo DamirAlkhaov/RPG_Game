@@ -1,6 +1,6 @@
 LIBFLAGS= -l:libcsfml-graphics.a -l:libcsfml-window.a -l:libcsfml-system.a
 CXXFLAGS = -std=c++11
-INCLUDE = -Iinclude/ -Isrc/
+INCLUDE = -Iinclude/ 
 SOURCE = src/main.c src/GameWindow.c src/GameLoop.c
 
 all: $(SOURCE)
