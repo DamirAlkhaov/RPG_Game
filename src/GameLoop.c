@@ -2,21 +2,23 @@
 #include "GameMap.h"
 #include <stdio.h>
 #include <SFML/Window/Keyboard.h>
+#include <SFML/Window/Mouse.h>
 
 #define CAMERA_SPEED 500
 
 
 GameMap map;
+float zoom = 1;
 
 
 void Loop_Init(){
     GameMap_Init(&map);
 }
 
-void Loop_Update(ARGS args, sfTime dt){
+void Loop_Update(ARGS *args, sfTime dt){
     float deltaTime = sfTime_asSeconds(dt);
-    sfRenderWindow *win = args.window;
-    sfView *view = args.view;
+    sfRenderWindow *win = args->window;
+    sfView *view = args->view;
 
     // do keyboard stuff here
     if (sfKeyboard_isKeyPressed(sfKeyEscape)){
@@ -45,7 +47,7 @@ void Loop_Update(ARGS args, sfTime dt){
     }
 
     GameMap_Render(&map, view, win);
-
+    //sfView_zoom(view, zoom);
     sfRenderWindow_setView(win, view);
 }
 

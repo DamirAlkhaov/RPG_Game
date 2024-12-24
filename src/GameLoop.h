@@ -7,6 +7,6 @@
 void Loop_Init();
 
 //Update game logic function, takes in sfTime which is Delta Time.
-void Loop_Update(ARGS arg, sfTime e);
+void Loop_Update(ARGS *arg, sfTime e);
 
 void Loop_End();
