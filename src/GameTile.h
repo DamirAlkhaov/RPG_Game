@@ -5,6 +5,6 @@ typedef struct gameTile {
     sfBool wall;
 } GameTile;
 
-GameTile* create_GameTile(const sfTexture const *texture);
+GameTile* create_GameTile(sfTexture *texture, sfSprite *sprite);
 
-void render(const sfRenderWindow const *win, const GameTile const *tile);
+void renderTile(sfRenderWindow *win, const GameTile const *tile);
