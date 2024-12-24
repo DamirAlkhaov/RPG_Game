@@ -6,10 +6,7 @@
 
 #define CAMERA_SPEED 500
 
-
 GameMap map;
-float zoom = 1;
-
 
 void Loop_Init(){
     GameMap_Init(&map);
@@ -47,7 +44,6 @@ void Loop_Update(ARGS *args, sfTime dt){
     }
 
     GameMap_Render(&map, view, win);
-    //sfView_zoom(view, zoom);
     sfRenderWindow_setView(win, view);
 }
 

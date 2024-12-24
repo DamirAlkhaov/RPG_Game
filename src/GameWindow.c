@@ -4,7 +4,6 @@
 #include <stdio.h>
 #define WIDTH 800
 #define HEIGHT 800
-float zoomI = 1;
 
 void GameWindow_Start(sfRenderWindow* myWindow){
     float ratioX = (float)1920/WIDTH;
@@ -31,11 +30,7 @@ void GameWindow_Start(sfRenderWindow* myWindow){
             if (event.type == sfEvtClosed){
                 sfRenderWindow_close(myWindow);
             }
-            if (event.type == sfEvtMouseWheelScrolled){
-                
-                zoomI = zoomI + zoomI * (float)event.mouseWheel.delta;
-                printf("%f\n", zoomI);
-            }
+
             //if (event.type == sfEvtResized){
             //    sfView_setSize(view, (sfVector2f){event.size.width, event.size.height});
             //}
