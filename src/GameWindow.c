@@ -1,11 +1,15 @@
 #include "GameWindow.h"
+#include "Args.h"
 #include "GameLoop.h"
 #include <stdio.h>
 #define WIDTH 800
 #define HEIGHT 800
 
 void GameWindow_Start(sfRenderWindow* myWindow){
-    sfVideoMode vm = {WIDTH,HEIGHT};
+    float ratioX = (float)1920/WIDTH;
+    float ratioY = (float)1080/HEIGHT;
+    printf("%f\n", ratioY);
+    sfVideoMode vm = {sfVideoMode_getDesktopMode().width / ratioX, sfVideoMode_getDesktopMode().height / ratioY};
     sfView *view = sfView_create();
     
     sfEvent event;
@@ -17,6 +21,8 @@ void GameWindow_Start(sfRenderWindow* myWindow){
 
     Loop_Init();
 
+    ARGS args = {myWindow, view};
+
     while (sfRenderWindow_isOpen(myWindow)){
         elapsed = sfClock_restart(cl);
         //window events
@@ -24,13 +30,17 @@ void GameWindow_Start(sfRenderWindow* myWindow){
             if (event.type == sfEvtClosed){
                 sfRenderWindow_close(myWindow);
             }
+            
+            //if (event.type == sfEvtResized){
+            //    sfView_setSize(view, (sfVector2f){event.size.width, event.size.height});
+            //}
         }
 
         //buffer
         sfRenderWindow_clear(myWindow, sfBlack);
 
         //Game update
-        Loop_Update(myWindow, view, elapsed);
+        Loop_Update(args, elapsed);
 
         //fps title would be better if I made this into a easier function and used it in the Game Loop function.
         char title[255];

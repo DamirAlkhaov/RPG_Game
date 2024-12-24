@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <SFML/Window/Keyboard.h>
 
-#define CAMERA_SPEED 5000
+#define CAMERA_SPEED 500
 
 
 GameMap map;
@@ -13,8 +13,10 @@ void Loop_Init(){
     GameMap_Init(&map);
 }
 
-void Loop_Update(sfRenderWindow *win, sfView *view, sfTime dt){
+void Loop_Update(ARGS args, sfTime dt){
     float deltaTime = sfTime_asSeconds(dt);
+    sfRenderWindow *win = args.window;
+    sfView *view = args.view;
 
     // do keyboard stuff here
     if (sfKeyboard_isKeyPressed(sfKeyEscape)){

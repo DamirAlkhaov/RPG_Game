@@ -46,23 +46,25 @@ void GameMap_Render(GameMap *map, sfView *view, sfRenderWindow *win) {
     sfVector2f viewCenter = sfView_getCenter(view);
     sfVector2f viewSize = sfView_getSize(view);
     
-    // Calculate view boundaries in world coordinates
     float viewLeft = (viewCenter.x - viewSize.x / 2) - 100;
     float viewTop = (viewCenter.y - viewSize.y / 2) - 100;
     float viewRight = (viewCenter.x + viewSize.x / 2) + 100;
     float viewBottom = (viewCenter.y + viewSize.y / 2) + 100;
     
-    // Iterate over tiles and render only those within the view
     int p = 0;
     for (int i = 0; i < map->size; i++) {
         for (int j = 0; j < map->size; j++) {
+
+            //get texture sizes
+            float sizeX = sfTexture_getSize(sfSprite_getTexture(map->tiles[i][j]->sprite)).x;
+            float sizeY = sfTexture_getSize(sfSprite_getTexture(map->tiles[i][j]->sprite)).y;
             // Compute tile position
-            float tileX = i * 16 * SCALE;
-            float tileY = j * 16 * SCALE;
-            //printf("x: %f y: %f\n", tileX, viewBottom);
+            float tileX = i * sizeX * SCALE;
+            float tileY = j * sizeY * SCALE;
+            
             // Check if tile is within view bounds
-            if ((tileX + 16 * (SCALE)) > viewLeft && tileX < viewRight &&
-                (tileY + 16 * (SCALE)) > viewTop && tileY < viewBottom) {
+            if ((tileX + sizeX * (SCALE)) > viewLeft && tileX < viewRight &&
+                (tileY + sizeY * (SCALE)) > viewTop && tileY < viewBottom) {
                 // Set tile position and scale
                 sfSprite_setScale(map->tiles[i][j]->sprite, (sfVector2f){SCALE, SCALE});
                 sfSprite_setPosition(map->tiles[i][j]->sprite, (sfVector2f){tileX, tileY});
@@ -73,5 +75,5 @@ void GameMap_Render(GameMap *map, sfView *view, sfRenderWindow *win) {
             }
         }
     }
-    printf("%d\n", p);
+    //printf("%d\n", p);
 }
