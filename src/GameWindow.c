@@ -1,12 +1,10 @@
 #include "GameWindow.h"
 #include "GameLoop.h"
-#include "GameMap.h"
 #include <stdio.h>
 #define WIDTH 800
 #define HEIGHT 800
-#define SCALE 5
 
-void createMainWindow(sfRenderWindow* myWindow){
+void GameWindow_Start(sfRenderWindow* myWindow){
     sfVideoMode vm = {WIDTH,HEIGHT};
     sfView *view = sfView_create();
     
@@ -17,8 +15,7 @@ void createMainWindow(sfRenderWindow* myWindow){
     sfClock *cl = sfClock_create();
     sfTime elapsed;
 
-    GameMap map;
-    GameMap_Init(&map);
+    Loop_Init();
 
     while (sfRenderWindow_isOpen(myWindow)){
         elapsed = sfClock_restart(cl);
@@ -27,30 +24,13 @@ void createMainWindow(sfRenderWindow* myWindow){
             if (event.type == sfEvtClosed){
                 sfRenderWindow_close(myWindow);
             }
-            if (event.type == sfEvtResized){
-                sfVector2f scrnSize = (sfVector2f){(float)event.size.width, (float)event.size.height};
-                sfView_setSize(view, scrnSize);
-                scrnSize.x /= 2; scrnSize.y /= 2;
-                sfView_setCenter(view, scrnSize);
-                
-                sfRenderWindow_setView(myWindow, view);
-            }
         }
-
-        //Game update
-        update(myWindow, elapsed);
 
         //buffer
         sfRenderWindow_clear(myWindow, sfBlack);
-        
-        //map rendering (put in a seperate file later.)
-        for (int i = 0; i < map.size; i++){
-            for (int j = 0; j < map.size; j++){
-                sfSprite_setScale(map.tiles[i][j]->sprite, (sfVector2f){SCALE, SCALE});
-                sfSprite_setPosition(map.tiles[i][j]->sprite, (sfVector2f){i*16*SCALE, j*16*SCALE});
-                renderTile(myWindow, map.tiles[i][j]);
-            }
-        }
+
+        //Game update
+        Loop_Update(myWindow, view, elapsed);
 
         //fps title would be better if I made this into a easier function and used it in the Game Loop function.
         char title[255];
@@ -64,5 +44,5 @@ void createMainWindow(sfRenderWindow* myWindow){
     
     sfView_destroy(view);
     sfRenderWindow_destroy(myWindow);
-    GameMap_Destroy(&map);
+    Loop_End();
 }

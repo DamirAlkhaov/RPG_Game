@@ -1,11 +1,19 @@
 #include "GameLoop.h"
+#include "GameMap.h"
 #include <stdio.h>
 #include <SFML/Window/Keyboard.h>
-#define CAMERA_SPEED 300
+
+#define CAMERA_SPEED 5000
 
 
+GameMap map;
 
-void update(sfRenderWindow *win, sfTime dt){
+
+void Loop_Init(){
+    GameMap_Init(&map);
+}
+
+void Loop_Update(sfRenderWindow *win, sfView *view, sfTime dt){
     float deltaTime = sfTime_asSeconds(dt);
 
     // do keyboard stuff here
@@ -14,23 +22,31 @@ void update(sfRenderWindow *win, sfTime dt){
     }  
     // probably should make the camera as a class and add a move function.
     if (sfKeyboard_isKeyPressed(sfKeyA)){
-        sfView *view = sfRenderWindow_getView(win);
+        
         sfView_move(view, (sfVector2f){-CAMERA_SPEED*deltaTime, 0});
-        sfRenderWindow_setView(win, view);
+
     }
     if (sfKeyboard_isKeyPressed(sfKeyD)){
-        sfView *view = sfRenderWindow_getView(win);
+        
         sfView_move(view, (sfVector2f){CAMERA_SPEED*deltaTime, 0});
-        sfRenderWindow_setView(win, view);
+
     }
     if (sfKeyboard_isKeyPressed(sfKeyW)){
-        sfView *view = sfRenderWindow_getView(win);
+        
         sfView_move(view, (sfVector2f){0, -CAMERA_SPEED*deltaTime});
-        sfRenderWindow_setView(win, view);
+
     }
     if (sfKeyboard_isKeyPressed(sfKeyS)){
-        sfView *view = sfRenderWindow_getView(win);
+        
         sfView_move(view, (sfVector2f){0, CAMERA_SPEED*deltaTime});
-        sfRenderWindow_setView(win, view);
+        
     }
+
+    GameMap_Render(&map, view, win);
+
+    sfRenderWindow_setView(win, view);
+}
+
+void Loop_End(){
+    GameMap_Destroy(&map);
 }

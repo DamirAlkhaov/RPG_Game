@@ -7,5 +7,5 @@ void main(){
     
     sfRenderWindow* mWindow;
     
-    createMainWindow(mWindow);
+    GameWindow_Start(mWindow);
 }
