@@ -1,34 +1,25 @@
 #include "GameLoop.h"
 #include "GameMap.h"
+#include "Player.h"s
 #include <stdio.h>
 #include <SFML/Window/Keyboard.h>
 #include <SFML/Window/Mouse.h>
 
-float cameraSpeed = 250;
+float cameraSpeed = 100;
 
 GameMap map;
-sfTexture *playerTXT;
-sfSprite *player;
+Player player;
+
 
 void Loop_Init(){
     GameMap_Init(&map);
-    player = sfSprite_create();
-    playerTXT = sfTexture_createFromFile("textures/player.png", NULL);
-    if (playerTXT == NULL){
-        puts("Failed to load player texture.");
-    }
-    sfSprite_setTexture(player, playerTXT, 0);
-    sfVector2f origin = {sfSprite_getLocalBounds(player).width/2, sfSprite_getLocalBounds(player).height/2};
-    sfSprite_setOrigin(player, origin);
-    sfSprite_scale(player, (sfVector2f){0.75,0.75});
+    Player_Init(&player);
 }
 
 void Loop_Update(ARGS *args, sfTime dt){
     float deltaTime = sfTime_asSeconds(dt);
     sfRenderWindow *win = args->window;
     sfView *view = args->view;
-
-    //printf("dt: %f\n", deltaTime);
 
     // do keyboard stuff here
     if (sfKeyboard_isKeyPressed(sfKeyEscape)){
@@ -38,22 +29,23 @@ void Loop_Update(ARGS *args, sfTime dt){
     if (sfKeyboard_isKeyPressed(sfKeyA)){
         
         sfView_move(view, (sfVector2f){-cameraSpeed*deltaTime, 0});
+        player.lastFaced = WEST;
 
     }
     if (sfKeyboard_isKeyPressed(sfKeyD)){
         
         sfView_move(view, (sfVector2f){cameraSpeed*deltaTime, 0});
-
+        player.lastFaced = EAST;
     }
     if (sfKeyboard_isKeyPressed(sfKeyW)){
         
         sfView_move(view, (sfVector2f){0, -cameraSpeed*deltaTime});
-
+        player.lastFaced = NORTH;
     }
     if (sfKeyboard_isKeyPressed(sfKeyS)){
         
         sfView_move(view, (sfVector2f){0, cameraSpeed*deltaTime});
-        
+        player.lastFaced = SOUTH;
     }
     if (sfKeyboard_isKeyPressed(sfKeyLBracket)){
         sfView_zoom(view, 1 + 2 * deltaTime);
@@ -61,29 +53,24 @@ void Loop_Update(ARGS *args, sfTime dt){
     if (sfKeyboard_isKeyPressed(sfKeyRBracket)){
         sfView_zoom(view, 1 - 2 * deltaTime);
     }
-    if (sfKeyboard_isKeyPressed(sfKeyComma)){
-        cameraSpeed += 500 * deltaTime;
-    }
-    if (sfKeyboard_isKeyPressed(sfKeyPeriod)){
-        cameraSpeed -= 500 * deltaTime;
-    }
-    if (cameraSpeed < 10){
-        cameraSpeed = 10;
+    if (sfKeyboard_isKeyPressed(sfKeyLShift)){
+        cameraSpeed = 250;
+    } else {
+        cameraSpeed = 100;
     }
 
-    sfSprite_setPosition(player, sfView_getCenter(view));
+    sfSprite_setPosition(player.playerSprite, sfView_getCenter(view));
 
     char title[255];
-    sprintf(title, "Game | FPS:%d", (int)(1/deltaTime));
+    sprintf(title, "Menace | FPS:%d", (int)(1/deltaTime));
     sfRenderWindow_setTitle(win, title);
     
     GameMap_Render(&map, view, win);
     sfRenderWindow_setView(win, view);
-    sfRenderWindow_drawSprite(win, player, NULL);
+    sfRenderWindow_drawSprite(win, player.playerSprite, NULL);
 }
 
 void Loop_End(){
     GameMap_Destroy(&map);
-    sfTexture_destroy(playerTXT);
-    sfSprite_destroy(player);
+    Player_Destroy(&player);
 }
