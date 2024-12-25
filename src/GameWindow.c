@@ -8,13 +8,12 @@
 void GameWindow_Start(sfRenderWindow* myWindow){
     float ratioX = (float)1920/WIDTH;
     float ratioY = (float)1080/HEIGHT;
-    printf("%f\n", ratioY);
-    sfVideoMode vm = {sfVideoMode_getDesktopMode().width / ratioX, sfVideoMode_getDesktopMode().height / ratioY};
+    sfVideoMode vm = {sfVideoMode_getDesktopMode().width / ratioX, sfVideoMode_getDesktopMode().width / ratioX};
     sfView *view = sfView_create();
     
     sfEvent event;
     myWindow = sfRenderWindow_create(vm, "Game", sfClose, NULL);
-    sfRenderWindow_setVerticalSyncEnabled(myWindow, (sfBool)1);
+    //sfRenderWindow_setVerticalSyncEnabled(myWindow, (sfBool)1);
 
     sfClock *cl = sfClock_create();
     sfTime elapsed;
@@ -41,11 +40,6 @@ void GameWindow_Start(sfRenderWindow* myWindow){
 
         //Game update
         Loop_Update(&args, elapsed);
-
-        //fps title would be better if I made this into a easier function and used it in the Game Loop function.
-        char title[255];
-        sprintf(title, "Game | FPS:%d", (int)(1/sfTime_asSeconds(elapsed)));
-        sfRenderWindow_setTitle(myWindow, title);
 
         //display
         sfRenderWindow_display(myWindow);
