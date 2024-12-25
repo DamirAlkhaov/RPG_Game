@@ -1,6 +1,6 @@
 #include "GameLoop.h"
-#include "GameMap.h"
-#include "Player.h"s
+#include <SFML/System/Time.h>
+#include <SFML/Graphics.h>
 #include <stdio.h>
 #include <SFML/Window/Keyboard.h>
 #include <SFML/Window/Mouse.h>
@@ -14,9 +14,11 @@ Player player;
 void Loop_Init(){
     GameMap_Init(&map);
     Player_Init(&player);
+    Bullet_Init();
 }
 
-void Loop_Update(ARGS *args, sfTime dt){
+void Loop_Update(ARGS *args){
+    sfTime dt = args->e;
     float deltaTime = sfTime_asSeconds(dt);
     sfRenderWindow *win = args->window;
     sfView *view = args->view;
@@ -58,6 +60,9 @@ void Loop_Update(ARGS *args, sfTime dt){
     } else {
         cameraSpeed = 100;
     }
+    if (sfKeyboard_isKeyPressed(sfKeyF)){
+        Player_Shoot(args, &player);
+    }
 
     sfSprite_setPosition(player.playerSprite, sfView_getCenter(view));
 
@@ -67,10 +72,12 @@ void Loop_Update(ARGS *args, sfTime dt){
     
     GameMap_Render(&map, view, win);
     sfRenderWindow_setView(win, view);
+    Bullet_Update(args);
     sfRenderWindow_drawSprite(win, player.playerSprite, NULL);
 }
 
 void Loop_End(){
-    GameMap_Destroy(&map);
-    Player_Destroy(&player);
+    GameMap_Destroy();
+    Player_Destroy();
+    Bullet_Destroy();
 }

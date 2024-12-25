@@ -65,7 +65,7 @@ void GameMap_Init(GameMap *gameMap){
     printf("Game map init done.\n");
 }
 
-void GameMap_Destroy(GameMap *gameMap){
+void GameMap_Destroy(){
     sfTexture_destroy(sfSprite_getTexture(fsprite));
     sfSprite_destroy(fsprite);
 

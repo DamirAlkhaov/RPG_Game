@@ -1,5 +1,4 @@
 #include "GameWindow.h"
-#include "Args.h"
 #include "GameLoop.h"
 #include <stdio.h>
 #define WIDTH 800
@@ -27,6 +26,7 @@ void GameWindow_Start(sfRenderWindow* myWindow){
 
     while (sfRenderWindow_isOpen(myWindow)){
         elapsed = sfClock_restart(cl);
+        args.e = elapsed;
         //window events
         while (sfRenderWindow_pollEvent(myWindow, &event)){
             if (event.type == sfEvtClosed){
@@ -42,7 +42,7 @@ void GameWindow_Start(sfRenderWindow* myWindow){
         sfRenderWindow_clear(myWindow, sfBlack);
 
         //Game update
-        Loop_Update(&args, elapsed);
+        Loop_Update(&args);
 
         //display
         sfRenderWindow_display(myWindow);

@@ -4,7 +4,10 @@
 sfTexture *playerTXT;
 sfSprite *playerSprite;
 
+
+
 void Player_Init(Player *player){
+    player->lastShot = clock();
     playerSprite = sfSprite_create();
     playerTXT = sfTexture_createFromFile("textures/player.png", NULL);
     if (playerTXT == NULL){
@@ -18,7 +21,30 @@ void Player_Init(Player *player){
     player->playerSprite = playerSprite;
 }
 
-void Player_Destroy(Player *player){
+void Player_Destroy(){
     sfTexture_destroy(playerTXT);
     sfSprite_destroy(playerSprite);
+}
+
+void Player_Shoot(ARGS *args, Player *player){
+    if (player->lastShot + 500 < clock()){
+        puts("hello");
+        switch (player->lastFaced){
+            case EAST:
+                Bullet_Create(EAST, sfSprite_getPosition(player->playerSprite));
+                break;
+            case NORTH:
+                Bullet_Create(NORTH, sfSprite_getPosition(player->playerSprite));
+                break;
+            case WEST:
+                Bullet_Create(WEST, sfSprite_getPosition(player->playerSprite));
+                break;
+            case SOUTH:
+                Bullet_Create(SOUTH, sfSprite_getPosition(player->playerSprite));
+                break;
+            
+        }
+        player->lastShot = clock();
+    }
+
 }
