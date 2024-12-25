@@ -6,6 +6,9 @@
 #define SCALE 6
 
 sfSprite *fsprite;
+sfSprite *wsprite;
+
+enum tiles {FLOOR, WALL};
 
 void GameMap_Init(GameMap *gameMap){
     gameMap->size = MAP_SIZE;
@@ -20,26 +23,49 @@ void GameMap_Init(GameMap *gameMap){
         printf("Texture loaded successfully.\n");
     }
 
-    fsprite = sfSprite_create();
-    
-    sfSprite_setTexture(fsprite, floorTXT, 0);
-    if (fsprite != NULL){
-        printf("Sprite successfully set\n");
+    sfTexture *wallTXT = sfTexture_createFromFile("textures/wall.png", NULL);
+    if (wallTXT == NULL){
+        printf("Texture failed to load.\n");
+        wallTXT = sfTexture_createFromFile("C:\\coding\\sfmlGame\\bin\\textures\\wall.png", NULL);
+        if (wallTXT == NULL){
+            printf("Texture for sure doesn't exist.\n");
+        }
+    } else {
+        printf("Texture loaded successfully.\n");
     }
 
-    GameTile *floor = GameTile_Create(floorTXT, fsprite);
+    fsprite = sfSprite_create();
+    wsprite = sfSprite_create();
 
+    GameTile *floor = GameTile_Create(floorTXT, fsprite);
+    GameTile *wall = GameTile_Create(wallTXT, wsprite);
     //temporary thing that sets the whole map to one sprite.
     for (int i = 0; i < MAP_SIZE; i++){
         for (int j = 0; j < MAP_SIZE; j++){
-            gameMap->tiles[i][j] = floor;
+            int r = rand() % 2;
+            switch (r)
+            {
+            case FLOOR:
+                gameMap->tiles[i][j] = floor;
+                break;
+            case WALL:
+                gameMap->tiles[i][j] = wall;
+                break;
+            
+            default:
+                break;
+            }
         }
     }
+    printf("Game map init done.\n");
 }
 
 void GameMap_Destroy(GameMap *gameMap){
     sfTexture_destroy(sfSprite_getTexture(fsprite));
     sfSprite_destroy(fsprite);
+
+    sfTexture_destroy(sfSprite_getTexture(wsprite));
+    sfSprite_destroy(wsprite);
 }
 
 void GameMap_Render(GameMap *map, sfView *view, sfRenderWindow *win) {
@@ -77,9 +103,7 @@ void GameMap_Render(GameMap *map, sfView *view, sfRenderWindow *win) {
     
                 // Render tile
                 GameTile_Render(win, map->tiles[i][j]);
-                p++;
             }
-            //printf("%f\n%f\n", tileX + sizeX * (SCALE), viewLeft);
         }
     }
     

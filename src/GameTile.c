@@ -5,6 +5,13 @@
 
 GameTile* GameTile_Create(sfTexture *texture, sfSprite *sprite) {
     GameTile *tile = (GameTile*)malloc(sizeof(GameTile));
+    if (texture == NULL){
+        puts("PUTA");
+    }
+    sfSprite_setTexture(sprite, texture, 0);
+    if (sprite != NULL){
+        printf("Sprite successfully set\n");
+    }
     tile->sprite = sprite;
     return tile;
 }
