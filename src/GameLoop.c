@@ -4,12 +4,23 @@
 #include <SFML/Window/Keyboard.h>
 #include <SFML/Window/Mouse.h>
 
-float cameraSpeed = 2000;
+float cameraSpeed = 250;
 
 GameMap map;
+sfTexture *playerTXT;
+sfSprite *player;
 
 void Loop_Init(){
     GameMap_Init(&map);
+    player = sfSprite_create();
+    playerTXT = sfTexture_createFromFile("textures/player.png", NULL);
+    if (playerTXT == NULL){
+        puts("Failed to load player texture.");
+    }
+    sfSprite_setTexture(player, playerTXT, 0);
+    sfVector2f origin = {sfSprite_getLocalBounds(player).width/2, sfSprite_getLocalBounds(player).height/2};
+    sfSprite_setOrigin(player, origin);
+    sfSprite_scale(player, (sfVector2f){0.75,0.75});
 }
 
 void Loop_Update(ARGS *args, sfTime dt){
@@ -60,14 +71,19 @@ void Loop_Update(ARGS *args, sfTime dt){
         cameraSpeed = 10;
     }
 
+    sfSprite_setPosition(player, sfView_getCenter(view));
+
     char title[255];
     sprintf(title, "Game | FPS:%d", (int)(1/deltaTime));
     sfRenderWindow_setTitle(win, title);
     
     GameMap_Render(&map, view, win);
     sfRenderWindow_setView(win, view);
+    sfRenderWindow_drawSprite(win, player, NULL);
 }
 
 void Loop_End(){
     GameMap_Destroy(&map);
+    sfTexture_destroy(playerTXT);
+    sfSprite_destroy(player);
 }

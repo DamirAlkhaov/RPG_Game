@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#define SCALE 6
+#define SCALE 1
 
 sfSprite *fsprite;
 sfSprite *wsprite;
