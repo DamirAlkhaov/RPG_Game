@@ -4,7 +4,7 @@
 #include <SFML/Window/Keyboard.h>
 #include <SFML/Window/Mouse.h>
 
-#define CAMERA_SPEED 5000
+float cameraSpeed = 2000;
 
 GameMap map;
 
@@ -26,22 +26,22 @@ void Loop_Update(ARGS *args, sfTime dt){
     
     if (sfKeyboard_isKeyPressed(sfKeyA)){
         
-        sfView_move(view, (sfVector2f){-CAMERA_SPEED*deltaTime, 0});
+        sfView_move(view, (sfVector2f){-cameraSpeed*deltaTime, 0});
 
     }
     if (sfKeyboard_isKeyPressed(sfKeyD)){
         
-        sfView_move(view, (sfVector2f){CAMERA_SPEED*deltaTime, 0});
+        sfView_move(view, (sfVector2f){cameraSpeed*deltaTime, 0});
 
     }
     if (sfKeyboard_isKeyPressed(sfKeyW)){
         
-        sfView_move(view, (sfVector2f){0, -CAMERA_SPEED*deltaTime});
+        sfView_move(view, (sfVector2f){0, -cameraSpeed*deltaTime});
 
     }
     if (sfKeyboard_isKeyPressed(sfKeyS)){
         
-        sfView_move(view, (sfVector2f){0, CAMERA_SPEED*deltaTime});
+        sfView_move(view, (sfVector2f){0, cameraSpeed*deltaTime});
         
     }
     if (sfKeyboard_isKeyPressed(sfKeyLBracket)){
@@ -50,11 +50,20 @@ void Loop_Update(ARGS *args, sfTime dt){
     if (sfKeyboard_isKeyPressed(sfKeyRBracket)){
         sfView_zoom(view, 1 - 2 * deltaTime);
     }
+    if (sfKeyboard_isKeyPressed(sfKeyComma)){
+        cameraSpeed += 500 * deltaTime;
+    }
+    if (sfKeyboard_isKeyPressed(sfKeyPeriod)){
+        cameraSpeed -= 500 * deltaTime;
+    }
+    if (cameraSpeed < 10){
+        cameraSpeed = 10;
+    }
 
     char title[255];
     sprintf(title, "Game | FPS:%d", (int)(1/deltaTime));
     sfRenderWindow_setTitle(win, title);
-
+    
     GameMap_Render(&map, view, win);
     sfRenderWindow_setView(win, view);
 }
