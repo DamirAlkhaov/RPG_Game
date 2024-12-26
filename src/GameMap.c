@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#define SCALE 1
 
 sfSprite *fsprite;
 sfSprite *wsprite;
@@ -12,6 +11,8 @@ enum tiles {FLOOR, WALL};
 
 void GameMap_Init(GameMap *gameMap){
     gameMap->size = MAP_SIZE;
+
+    printf("Sizeof Game Tile: %zu", sizeof(GameTile));
 
     //texture loading
     sfTexture *floorTXT = sfTexture_createFromFile("textures/floor.png", NULL);
@@ -47,18 +48,11 @@ void GameMap_Init(GameMap *gameMap){
     //randing the tiles
     for (int i = 0; i < MAP_SIZE; i++){
         for (int j = 0; j < MAP_SIZE; j++){
-            int r = rand() % 2;
-            switch (r)
-            {
-            case FLOOR:
+            int r = 1 + rand() % 100;
+            if (r <= 75){
                 gameMap->tiles[i][j] = floor;
-                break;
-            case WALL:
+            } else {
                 gameMap->tiles[i][j] = wall;
-                break;
-            
-            default:
-                break;
             }
         }
     }
@@ -78,34 +72,37 @@ void GameMap_Render(GameMap *map, sfView *view, sfRenderWindow *win) {
     sfVector2f viewSize = sfView_getSize(view);
     
     //screen coordinates (in pixels and centered)
-    float viewLeft = (viewCenter.x - viewSize.x / 2) - 100;
-    float viewTop = (viewCenter.y - viewSize.y / 2) - 100;
-    float viewRight = (viewCenter.x + viewSize.x / 2) + 100;
-    float viewBottom = (viewCenter.y + viewSize.y / 2) + 100;
+    float viewLeft = (viewCenter.x - viewSize.x / 2) - 50;
+    float viewTop = (viewCenter.y - viewSize.y / 2) - 50;
+    float viewRight = (viewCenter.x + viewSize.x / 2) + 50;
+    float viewBottom = (viewCenter.y + viewSize.y / 2) + 50;
 
     float tileX;
     float tileY;
-    
-    //rendering for loop.
-    for (int i = 0; i < map->size; i++) {
-        for (int j = 0; j < map->size; j++) {
 
-            //get texture sizes
+    int left = viewLeft / 32;
+    int top = viewTop / 32;
+    int right = viewRight / 32;
+    int bottom = viewBottom /32;
+    if (left < 0) left = 0;
+    if (top < 0) top = 0;
+    if (bottom > map->size) bottom = map->size;
+    if (right > map->size) right = map->size;
+
+    //printf("l: %d t: %d b: %d r:%d\n", left, top, bottom, right);
+    //rendering for loop.
+    for (int i = left; i < right; i++) {
+        for (int j = top; j < bottom; j++) { 
+            // tile position
+            tileX = i * 32;
+            tileY = j * 32;
             
-            // Compute tile position
-            tileX = i * 32 * SCALE;
-            tileY = j * 32 * SCALE;
             
-            // Check if tile is within view bounds
-            if ((tileX + 32 * (SCALE)) > viewLeft && tileX < viewRight &&
-                (tileY + 32 * (SCALE)) > viewTop && tileY < viewBottom) {
-                // Set tile position and scale
-                sfSprite_setScale(map->tiles[i][j]->sprite, (sfVector2f){SCALE, SCALE});
-                sfSprite_setPosition(map->tiles[i][j]->sprite, (sfVector2f){tileX, tileY});
+            sfSprite_setPosition(map->tiles[i][j]->sprite, (sfVector2f){tileX, tileY});
     
-                // Render tile
-                GameTile_Render(win, map->tiles[i][j]);
-            }
+            // Render tile
+            GameTile_Render(win, map->tiles[i][j]);
+            
         }
     }
     

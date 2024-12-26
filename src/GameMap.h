@@ -1,5 +1,5 @@
 #include "GameTile.h"
-#define MAP_SIZE 200 // 500 works well on the uni laptop.
+#define MAP_SIZE 1000 // 500 works well on the uni laptop.
 
 typedef struct {
     GameTile *tiles[MAP_SIZE][MAP_SIZE];
