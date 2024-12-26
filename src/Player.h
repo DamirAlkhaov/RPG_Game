@@ -1,3 +1,4 @@
+#pragma once
 #include <SFML/Graphics.h>
 #include "Bullet.h"
 #include "Time.h"

@@ -12,7 +12,7 @@ void GameWindow_Start(sfRenderWindow* myWindow){
     
     sfEvent event;
     myWindow = sfRenderWindow_create(vm, "Game", sfClose, NULL);
-    //sfRenderWindow_setVerticalSyncEnabled(myWindow, (sfBool)1);
+    sfRenderWindow_setVerticalSyncEnabled(myWindow, (sfBool)1);
 
     sfClock *cl = sfClock_create();
     sfTime elapsed;

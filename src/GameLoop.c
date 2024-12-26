@@ -4,29 +4,19 @@
 #include <stdio.h>
 #include <SFML/Window/Keyboard.h>
 #include <SFML/Window/Mouse.h>
+#include "UI.h"
 
 
 float cameraSpeed = 100;
 
 GameMap map;
 Player player;
-sfFont *dayDream_font;
-sfText *text;
-
 
 void Loop_Init(){
     GameMap_Init(&map);
     Player_Init(&player);
     Bullet_Init();
-    dayDream_font = sfFont_createFromFile("fonts/Daydream.ttf");
-    if (dayDream_font == NULL) puts("failed to load font.");
-    text = sfText_create();
-    sfText_setFont(text, dayDream_font);
-    if (text == NULL) puts("failed to create text.");
-    sfText_setString(text, "MENACE");
-    sfText_scale(text, (sfVector2f){0.2, 0.2});
-    sfText_setOutlineColor(text, sfBlack);
-    sfText_setOutlineThickness(text, 10.f);
+    UI_Init();
 }
 
 void Loop_Update(ARGS *args){
@@ -82,11 +72,11 @@ void Loop_Update(ARGS *args){
         }
         if (sfKeyboard_isKeyPressed(sfKeyLBracket)){
             sfView_zoom(view, 1 + 2 * deltaTime);
-            sfText_scale(text, (sfVector2f){1 + 2 *deltaTime, 1 + 2*deltaTime});
+            
         }
         if (sfKeyboard_isKeyPressed(sfKeyRBracket)){
             sfView_zoom(view, 1 - 2 * deltaTime);
-            sfText_scale(text, (sfVector2f){1 - 2 *deltaTime, 1 - 2*deltaTime});
+            
         }
         if (sfKeyboard_isKeyPressed(sfKeyLShift) && ((player.stamina > 0 && !player.cooldown) || (player.stamina >= 20 && player.cooldown))){
             cameraSpeed = 250;
@@ -95,45 +85,33 @@ void Loop_Update(ARGS *args){
             if (player.stamina >= 20) player.cooldown = sfFalse;
         } else {
             cameraSpeed = 100;
-            player.stamina += 5 * deltaTime;
+            player.stamina += 10 * deltaTime;
             if (player.stamina > 100) player.stamina = 100;
         }
         if (sfMouse_isButtonPressed(sfMouseLeft)){
             Player_Shoot(args, &player);
         }
     }
-    
 
+    // update player sprite pos
     sfSprite_setPosition(player.playerSprite, sfView_getCenter(view));
 
+    // fps counter title
     char title[255];
     sprintf(title, "Menace | FPS:%d", (int)(1/deltaTime));
     sfRenderWindow_setTitle(win, title);
-
-    sfVector2f viewCenter = sfView_getCenter(view);
-    sfVector2f viewSize = sfView_getSize(view);
     
-    //screen coordinates (in pixels and centered)
-    float viewLeft = (viewCenter.x - viewSize.x / 2) + 10 * sfText_getScale(text).x;
-    float viewTop = (viewCenter.y - viewSize.y / 2) + 10 * sfText_getScale(text).x;
-    float viewRight = (viewCenter.x + viewSize.x / 2);
-    float viewBottom = (viewCenter.y + viewSize.y / 2);
-    
+    //rendering
     GameMap_Render(&map, view, win);
     sfRenderWindow_setView(win, view);
     Bullet_Update(args);
     sfRenderWindow_drawSprite(win, player.playerSprite, NULL);
-
-    char textDT[20];
-    sprintf_s(textDT, 20 * sizeof(char), "Stamina: %.0f", player.stamina);
-    sfText_setString(text, textDT);
-
-    sfText_setPosition(text, (sfVector2f){viewLeft, viewTop});
-    sfRenderWindow_drawText(win, text, NULL);
+    UI_Update(args, &player);
 }
 
 void Loop_End(){
     GameMap_Destroy(&map);
     Player_Destroy();
     Bullet_Destroy();
+    UI_Destroy();
 }

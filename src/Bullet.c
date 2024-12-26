@@ -1,7 +1,7 @@
 #include "Bullet.h"
 #include <stdio.h>
 #include <stdlib.h>
-#define BULLET_SPEED 500
+#define BULLET_SPEED 1000
 
 sfTexture *bulletTXT;
 sfSprite *bulletSprite;

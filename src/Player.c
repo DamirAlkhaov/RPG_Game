@@ -29,7 +29,7 @@ void Player_Destroy(){
 }
 
 void Player_Shoot(ARGS *args, Player *player){
-    if (player->lastShot + 200 < clock()){
+    if (player->lastShot + 100 < clock()){
         sfVector2i mousePosPixel = sfMouse_getPositionRenderWindow(args->window);
         sfVector2f mousePosCoord = sfRenderWindow_mapPixelToCoords(args->window, mousePosPixel, args->view);
         sfVector2f playerPos = sfSprite_getPosition(player->playerSprite);
