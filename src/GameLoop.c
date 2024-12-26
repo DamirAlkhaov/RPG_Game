@@ -5,6 +5,7 @@
 #include <SFML/Window/Keyboard.h>
 #include <SFML/Window/Mouse.h>
 
+
 float cameraSpeed = 100;
 
 GameMap map;
@@ -22,32 +23,58 @@ void Loop_Update(ARGS *args){
     float deltaTime = sfTime_asSeconds(dt);
     sfRenderWindow *win = args->window;
     sfView *view = args->view;
+    sfBool moved = sfFalse;
 
     // do keyboard stuff here
     if (sfKeyboard_isKeyPressed(sfKeyEscape)){
         sfRenderWindow_close(win);
     }  
+
+    if (sfKeyboard_isKeyPressed(sfKeyD) && sfKeyboard_isKeyPressed(sfKeyW) && !moved){
+        sfView_move(view, (sfVector2f){cameraSpeed*deltaTime*cos(45), -cameraSpeed*deltaTime*sin(45)});
+        player.lastFaced = NE;
+        moved = sfTrue;
+    }
+    if (sfKeyboard_isKeyPressed(sfKeyA) && sfKeyboard_isKeyPressed(sfKeyW) && !moved){
+        sfView_move(view, (sfVector2f){-cameraSpeed*deltaTime*cos(45), -cameraSpeed*deltaTime*sin(45)});
+        player.lastFaced = NW;
+        moved = sfTrue;
+    }
+    if (sfKeyboard_isKeyPressed(sfKeyA) && sfKeyboard_isKeyPressed(sfKeyS) && !moved){
+        sfView_move(view, (sfVector2f){-cameraSpeed*deltaTime*cos(45), cameraSpeed*deltaTime*sin(45)});
+        player.lastFaced = SW;
+        moved = sfTrue;
+    }
+    if (sfKeyboard_isKeyPressed(sfKeyD) && sfKeyboard_isKeyPressed(sfKeyS) && !moved){
+        sfView_move(view, (sfVector2f){cameraSpeed*deltaTime*cos(45), cameraSpeed*deltaTime*sin(45)});
+        player.lastFaced = SE;
+        moved = sfTrue;
+    }
     
-    if (sfKeyboard_isKeyPressed(sfKeyA)){
+    if (sfKeyboard_isKeyPressed(sfKeyA) && !moved){
         
         sfView_move(view, (sfVector2f){-cameraSpeed*deltaTime, 0});
         player.lastFaced = WEST;
+        moved = sfTrue;
 
     }
-    if (sfKeyboard_isKeyPressed(sfKeyD)){
+    if (sfKeyboard_isKeyPressed(sfKeyD) && !moved){
         
         sfView_move(view, (sfVector2f){cameraSpeed*deltaTime, 0});
         player.lastFaced = EAST;
+        moved = sfTrue;
     }
-    if (sfKeyboard_isKeyPressed(sfKeyW)){
+    if (sfKeyboard_isKeyPressed(sfKeyW) && !moved){
         
         sfView_move(view, (sfVector2f){0, -cameraSpeed*deltaTime});
         player.lastFaced = NORTH;
+        moved = sfTrue;
     }
-    if (sfKeyboard_isKeyPressed(sfKeyS)){
+    if (sfKeyboard_isKeyPressed(sfKeyS) && !moved){
         
         sfView_move(view, (sfVector2f){0, cameraSpeed*deltaTime});
         player.lastFaced = SOUTH;
+        moved = sfTrue;
     }
     if (sfKeyboard_isKeyPressed(sfKeyLBracket)){
         sfView_zoom(view, 1 + 2 * deltaTime);

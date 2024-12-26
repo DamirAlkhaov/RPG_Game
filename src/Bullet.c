@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include <stdio.h>
 #include <stdlib.h>
+#define BULLET_SPEED 500
 
 sfTexture *bulletTXT;
 sfSprite *bulletSprite;
@@ -52,30 +53,48 @@ void Bullet_Update(ARGS *args){
 
         switch (dir){
             case EAST:
-                move.x = 1;
+                move.x = BULLET_SPEED;
                 sfSprite_setRotation(bulletSprite, 0);
                 break;
             case NORTH:
-                move.y = -1;
+                move.y = -BULLET_SPEED;
                 sfSprite_setRotation(bulletSprite, 270);
                 break;
             case WEST:
-                move.x = -1;
+                move.x = -BULLET_SPEED;
                 sfSprite_setRotation(bulletSprite, 180);
                 break;
             case SOUTH:
-                move.y = 1;
+                move.y = BULLET_SPEED;
                 sfSprite_setRotation(bulletSprite, 90);
+                break;
+            case NE:
+                move.x = BULLET_SPEED * cos(45);
+                move.y = -BULLET_SPEED * sin(45);
+                sfSprite_setRotation(bulletSprite, 270+45);
+                break;
+            case NW:
+                move.x = -BULLET_SPEED * cos(45);
+                move.y = -BULLET_SPEED * sin(45);
+                sfSprite_setRotation(bulletSprite, 270-45);
+                break;
+            case SW:
+                move.x = -BULLET_SPEED * cos(45);
+                move.y = BULLET_SPEED * sin(45);
+                sfSprite_setRotation(bulletSprite, 180-45);
+                break;
+            case SE:
+                move.x = BULLET_SPEED * cos(45);
+                move.y = BULLET_SPEED * sin(45);
+                sfSprite_setRotation(bulletSprite, 45);
                 break;
             default:
                 break;
         }
         
-        move.x += move.x * sfTime_asSeconds(args->e);
-        move.y += move.y * sfTime_asSeconds(args->e);
-        bullets[i]->pos.x += move.x;
-        bullets[i]->pos.y += move.y;
-        
+        bullets[i]->pos.x += move.x * sfTime_asSeconds(args->e);
+        bullets[i]->pos.y += move.y * sfTime_asSeconds(args->e);
+
         sfSprite_setPosition(bulletSprite, bullets[i]->pos);
         sfRenderWindow_drawSprite(args->window, bulletSprite, NULL);
         
