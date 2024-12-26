@@ -4,12 +4,10 @@
 sfTexture *playerTXT;
 sfSprite *playerSprite;
 
-
-
 void Player_Init(Player *player){
     player->lastShot = clock();
     playerSprite = sfSprite_create();
-    playerTXT = sfTexture_createFromFile("textures/player.png", NULL);
+    playerTXT = sfTexture_createFromFile("bin/textures/player.png", NULL);
     if (playerTXT == NULL){
         puts("Failed to load player texture.");
     }

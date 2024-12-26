@@ -49,10 +49,12 @@ void GameMap_Init(GameMap *gameMap){
     for (int i = 0; i < MAP_SIZE; i++){
         for (int j = 0; j < MAP_SIZE; j++){
             int r = 1 + rand() % 100;
-            if (r <= 75){
+            if (r <= 80){
                 gameMap->tiles[i][j] = floor;
+                gameMap->tiles[i][j]->wall = sfFalse;
             } else {
                 gameMap->tiles[i][j] = wall;
+                gameMap->tiles[i][j]->wall = sfTrue;
             }
         }
     }

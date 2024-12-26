@@ -7,7 +7,7 @@ all: $(SOURCE)
 	gcc $(INCLUDE) $(SOURCE) -o bin/game.exe -Linclude/ $(LIBFLAGS)
 
 play:
-	bin/main.exe
+	bin/game.exe
 
 clean:
 	rm bin/game.exe

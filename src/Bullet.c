@@ -8,7 +8,7 @@ sfSprite *bulletSprite;
 Bullet *bullets[BULLETS_LIMIT];
 
 void Bullet_Init(){
-    bulletTXT = sfTexture_createFromFile("textures/bullet.png", NULL);
+    bulletTXT = sfTexture_createFromFile("bin/textures/bullet.png", NULL);
     if (bulletTXT == NULL){
         puts("Bullets texture failed to load.");
     }

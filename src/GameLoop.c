@@ -10,12 +10,22 @@ float cameraSpeed = 100;
 
 GameMap map;
 Player player;
+sfFont *dayDream_font;
+sfText *text;
 
 
 void Loop_Init(){
     GameMap_Init(&map);
     Player_Init(&player);
     Bullet_Init();
+    dayDream_font = sfFont_createFromFile("bin/fonts/Daydream.ttf");
+    if (dayDream_font == NULL) puts("failed to load font.");
+    text = sfText_create();
+    sfText_setFont(text, dayDream_font);
+    if (text == NULL) puts("failed to create text.");
+    sfText_setString(text, "MENACE");
+    sfText_scale(text, (sfVector2f){0.3, 0.3});
+    puts("FUCK");
 }
 
 void Loop_Update(ARGS *args){
@@ -78,9 +88,11 @@ void Loop_Update(ARGS *args){
     }
     if (sfKeyboard_isKeyPressed(sfKeyLBracket)){
         sfView_zoom(view, 1 + 2 * deltaTime);
+        sfText_scale(text, (sfVector2f){1 + 2 *deltaTime, 1 + 2*deltaTime});
     }
     if (sfKeyboard_isKeyPressed(sfKeyRBracket)){
         sfView_zoom(view, 1 - 2 * deltaTime);
+        sfText_scale(text, (sfVector2f){1 - 2 *deltaTime, 1 - 2*deltaTime});
     }
     if (sfKeyboard_isKeyPressed(sfKeyLShift)){
         cameraSpeed = 250;
@@ -96,11 +108,27 @@ void Loop_Update(ARGS *args){
     char title[255];
     sprintf(title, "Menace | FPS:%d", (int)(1/deltaTime));
     sfRenderWindow_setTitle(win, title);
+
+    sfVector2f viewCenter = sfView_getCenter(view);
+    sfVector2f viewSize = sfView_getSize(view);
+    
+    //screen coordinates (in pixels and centered)
+    float viewLeft = (viewCenter.x - viewSize.x / 2) + 10 * sfText_getScale(text).x;
+    float viewTop = (viewCenter.y - viewSize.y / 2) + 10 * sfText_getScale(text).x;
+    float viewRight = (viewCenter.x + viewSize.x / 2);
+    float viewBottom = (viewCenter.y + viewSize.y / 2);
     
     GameMap_Render(&map, view, win);
     sfRenderWindow_setView(win, view);
     Bullet_Update(args);
     sfRenderWindow_drawSprite(win, player.playerSprite, NULL);
+
+    char textDT[20];
+    sprintf(textDT, "%f", deltaTime);
+    sfText_setString(text, textDT);
+
+    sfText_setPosition(text, (sfVector2f){viewLeft, viewTop});
+    sfRenderWindow_drawText(win, text, NULL);
 }
 
 void Loop_End(){
