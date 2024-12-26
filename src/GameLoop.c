@@ -18,7 +18,7 @@ void Loop_Init(){
     GameMap_Init(&map);
     Player_Init(&player);
     Bullet_Init();
-    dayDream_font = sfFont_createFromFile("bin/fonts/Daydream.ttf");
+    dayDream_font = sfFont_createFromFile("fonts/Daydream.ttf");
     if (dayDream_font == NULL) puts("failed to load font.");
     text = sfText_create();
     sfText_setFont(text, dayDream_font);

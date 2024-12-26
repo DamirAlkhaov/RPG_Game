@@ -10,7 +10,7 @@ void Player_Init(Player *player){
 
     //sprite
     playerSprite = sfSprite_create();
-    playerTXT = sfTexture_createFromFile("bin/textures/player.png", NULL);
+    playerTXT = sfTexture_createFromFile("textures/player.png", NULL);
     if (playerTXT == NULL){
         puts("Failed to load player texture.");
     }
