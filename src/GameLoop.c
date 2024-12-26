@@ -104,7 +104,7 @@ void Loop_Update(ARGS *args){
 }
 
 void Loop_End(){
-    GameMap_Destroy();
+    GameMap_Destroy(&map);
     Player_Destroy();
     Bullet_Destroy();
 }

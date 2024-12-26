@@ -59,12 +59,18 @@ void GameMap_Init(GameMap *gameMap){
     printf("Game map init done.\n");
 }
 
-void GameMap_Destroy(){
+void GameMap_Destroy(GameMap *gameMap){
     sfTexture_destroy(sfSprite_getTexture(fsprite));
     sfSprite_destroy(fsprite);
 
     sfTexture_destroy(sfSprite_getTexture(wsprite));
     sfSprite_destroy(wsprite);
+
+    for (int i = 0; i < MAP_SIZE; i++){
+        for (int j = 0; j < MAP_SIZE; j++){
+            free(gameMap->tiles[i][j]);
+        }
+    }
 }
 
 void GameMap_Render(GameMap *map, sfView *view, sfRenderWindow *win) {
