@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.h>
 
-typedef enum {EAST, NORTH, WEST, SOUTH} DIRECTIONS;
+typedef enum {EAST, NORTH, WEST, SOUTH, NE, NW, SW, SE} DIRECTIONS;
 
 typedef struct {
     sfRenderWindow *window;

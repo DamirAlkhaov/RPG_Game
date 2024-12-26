@@ -28,7 +28,6 @@ void Player_Destroy(){
 
 void Player_Shoot(ARGS *args, Player *player){
     if (player->lastShot + 500 < clock()){
-        puts("hello");
         switch (player->lastFaced){
             case EAST:
                 Bullet_Create(EAST, sfSprite_getPosition(player->playerSprite));
