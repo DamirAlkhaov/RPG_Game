@@ -6,6 +6,9 @@ sfSprite *playerSprite;
 
 void Player_Init(Player *player){
     player->lastShot = clock();
+    player->stamina = 100.f;
+
+    //sprite
     playerSprite = sfSprite_create();
     playerTXT = sfTexture_createFromFile("bin/textures/player.png", NULL);
     if (playerTXT == NULL){

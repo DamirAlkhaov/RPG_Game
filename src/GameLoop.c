@@ -24,7 +24,9 @@ void Loop_Init(){
     sfText_setFont(text, dayDream_font);
     if (text == NULL) puts("failed to create text.");
     sfText_setString(text, "MENACE");
-    sfText_scale(text, (sfVector2f){0.3, 0.3});
+    sfText_scale(text, (sfVector2f){0.2, 0.2});
+    sfText_setOutlineColor(text, sfBlack);
+    sfText_setOutlineThickness(text, 10.f);
     puts("FUCK");
 }
 
@@ -94,10 +96,15 @@ void Loop_Update(ARGS *args){
         sfView_zoom(view, 1 - 2 * deltaTime);
         sfText_scale(text, (sfVector2f){1 - 2 *deltaTime, 1 - 2*deltaTime});
     }
-    if (sfKeyboard_isKeyPressed(sfKeyLShift)){
+    if (sfKeyboard_isKeyPressed(sfKeyLShift) && ((player.stamina > 0 && !player.cooldown) || (player.stamina >= 20 && player.cooldown))){
         cameraSpeed = 250;
+        player.stamina -= 25 * deltaTime;
+        if (player.stamina < 0) {player.stamina = 0; player.cooldown = sfTrue;}
+        if (player.stamina >= 20) player.cooldown = sfFalse;
     } else {
         cameraSpeed = 100;
+        player.stamina += 5 * deltaTime;
+        if (player.stamina > 100) player.stamina = 100;
     }
     if (sfKeyboard_isKeyPressed(sfKeyF)){
         Player_Shoot(args, &player);
@@ -124,7 +131,7 @@ void Loop_Update(ARGS *args){
     sfRenderWindow_drawSprite(win, player.playerSprite, NULL);
 
     char textDT[20];
-    sprintf(textDT, "%f", deltaTime);
+    sprintf_s(textDT, 20 * sizeof(char), "Stamina: %.0f", player.stamina);
     sfText_setString(text, textDT);
 
     sfText_setPosition(text, (sfVector2f){viewLeft, viewTop});
