@@ -27,7 +27,6 @@ void Loop_Init(){
     sfText_scale(text, (sfVector2f){0.2, 0.2});
     sfText_setOutlineColor(text, sfBlack);
     sfText_setOutlineThickness(text, 10.f);
-    puts("FUCK");
 }
 
 void Loop_Update(ARGS *args){
@@ -38,77 +37,72 @@ void Loop_Update(ARGS *args){
     sfBool moved = sfFalse;
 
     // do keyboard stuff here
-    if (sfKeyboard_isKeyPressed(sfKeyEscape)){
-        sfRenderWindow_close(win);
-    }  
+    if (sfRenderWindow_hasFocus(win)){
+        if (sfKeyboard_isKeyPressed(sfKeyEscape)){
+            sfRenderWindow_close(win);
+        }  
 
-    if (sfKeyboard_isKeyPressed(sfKeyD) && sfKeyboard_isKeyPressed(sfKeyW) && !moved){
-        sfView_move(view, (sfVector2f){cameraSpeed*deltaTime*cos(45), -cameraSpeed*deltaTime*sin(45)});
-        player.lastFaced = NE;
-        moved = sfTrue;
-    }
-    if (sfKeyboard_isKeyPressed(sfKeyA) && sfKeyboard_isKeyPressed(sfKeyW) && !moved){
-        sfView_move(view, (sfVector2f){-cameraSpeed*deltaTime*cos(45), -cameraSpeed*deltaTime*sin(45)});
-        player.lastFaced = NW;
-        moved = sfTrue;
-    }
-    if (sfKeyboard_isKeyPressed(sfKeyA) && sfKeyboard_isKeyPressed(sfKeyS) && !moved){
-        sfView_move(view, (sfVector2f){-cameraSpeed*deltaTime*cos(45), cameraSpeed*deltaTime*sin(45)});
-        player.lastFaced = SW;
-        moved = sfTrue;
-    }
-    if (sfKeyboard_isKeyPressed(sfKeyD) && sfKeyboard_isKeyPressed(sfKeyS) && !moved){
-        sfView_move(view, (sfVector2f){cameraSpeed*deltaTime*cos(45), cameraSpeed*deltaTime*sin(45)});
-        player.lastFaced = SE;
-        moved = sfTrue;
+        if (sfKeyboard_isKeyPressed(sfKeyD) && sfKeyboard_isKeyPressed(sfKeyW) && !moved){
+            sfView_move(view, (sfVector2f){cameraSpeed*deltaTime*cos(45 * 3.14/180), -cameraSpeed*deltaTime*sin(45 * 3.14/180)});
+            moved = sfTrue;
+        }
+        if (sfKeyboard_isKeyPressed(sfKeyA) && sfKeyboard_isKeyPressed(sfKeyW) && !moved){
+            sfView_move(view, (sfVector2f){-cameraSpeed*deltaTime*cos(45 * 3.14/180), -cameraSpeed*deltaTime*sin(45 * 3.14/180)});
+            moved = sfTrue;
+        }
+        if (sfKeyboard_isKeyPressed(sfKeyA) && sfKeyboard_isKeyPressed(sfKeyS) && !moved){
+            sfView_move(view, (sfVector2f){-cameraSpeed*deltaTime*cos(45 * 3.14/180), cameraSpeed*deltaTime*sin(45 * 3.14/180)});
+            moved = sfTrue;
+        }
+        if (sfKeyboard_isKeyPressed(sfKeyD) && sfKeyboard_isKeyPressed(sfKeyS) && !moved){
+            sfView_move(view, (sfVector2f){cameraSpeed*deltaTime*cos(45 * 3.14/180), cameraSpeed*deltaTime*sin(45 * 3.14/180)});
+            moved = sfTrue;
+        }
+
+        if (sfKeyboard_isKeyPressed(sfKeyA) && !moved){
+
+            sfView_move(view, (sfVector2f){-cameraSpeed*deltaTime, 0});
+            moved = sfTrue;
+
+        }
+        if (sfKeyboard_isKeyPressed(sfKeyD) && !moved){
+
+            sfView_move(view, (sfVector2f){cameraSpeed*deltaTime, 0});
+            moved = sfTrue;
+        }
+        if (sfKeyboard_isKeyPressed(sfKeyW) && !moved){
+
+            sfView_move(view, (sfVector2f){0, -cameraSpeed*deltaTime});
+            moved = sfTrue;
+        }
+        if (sfKeyboard_isKeyPressed(sfKeyS) && !moved){
+
+            sfView_move(view, (sfVector2f){0, cameraSpeed*deltaTime});
+            moved = sfTrue;
+        }
+        if (sfKeyboard_isKeyPressed(sfKeyLBracket)){
+            sfView_zoom(view, 1 + 2 * deltaTime);
+            sfText_scale(text, (sfVector2f){1 + 2 *deltaTime, 1 + 2*deltaTime});
+        }
+        if (sfKeyboard_isKeyPressed(sfKeyRBracket)){
+            sfView_zoom(view, 1 - 2 * deltaTime);
+            sfText_scale(text, (sfVector2f){1 - 2 *deltaTime, 1 - 2*deltaTime});
+        }
+        if (sfKeyboard_isKeyPressed(sfKeyLShift) && ((player.stamina > 0 && !player.cooldown) || (player.stamina >= 20 && player.cooldown))){
+            cameraSpeed = 250;
+            player.stamina -= 25 * deltaTime;
+            if (player.stamina < 0) {player.stamina = 0; player.cooldown = sfTrue;}
+            if (player.stamina >= 20) player.cooldown = sfFalse;
+        } else {
+            cameraSpeed = 100;
+            player.stamina += 5 * deltaTime;
+            if (player.stamina > 100) player.stamina = 100;
+        }
+        if (sfMouse_isButtonPressed(sfMouseLeft)){
+            Player_Shoot(args, &player);
+        }
     }
     
-    if (sfKeyboard_isKeyPressed(sfKeyA) && !moved){
-        
-        sfView_move(view, (sfVector2f){-cameraSpeed*deltaTime, 0});
-        player.lastFaced = WEST;
-        moved = sfTrue;
-
-    }
-    if (sfKeyboard_isKeyPressed(sfKeyD) && !moved){
-        
-        sfView_move(view, (sfVector2f){cameraSpeed*deltaTime, 0});
-        player.lastFaced = EAST;
-        moved = sfTrue;
-    }
-    if (sfKeyboard_isKeyPressed(sfKeyW) && !moved){
-        
-        sfView_move(view, (sfVector2f){0, -cameraSpeed*deltaTime});
-        player.lastFaced = NORTH;
-        moved = sfTrue;
-    }
-    if (sfKeyboard_isKeyPressed(sfKeyS) && !moved){
-        
-        sfView_move(view, (sfVector2f){0, cameraSpeed*deltaTime});
-        player.lastFaced = SOUTH;
-        moved = sfTrue;
-    }
-    if (sfKeyboard_isKeyPressed(sfKeyLBracket)){
-        sfView_zoom(view, 1 + 2 * deltaTime);
-        sfText_scale(text, (sfVector2f){1 + 2 *deltaTime, 1 + 2*deltaTime});
-    }
-    if (sfKeyboard_isKeyPressed(sfKeyRBracket)){
-        sfView_zoom(view, 1 - 2 * deltaTime);
-        sfText_scale(text, (sfVector2f){1 - 2 *deltaTime, 1 - 2*deltaTime});
-    }
-    if (sfKeyboard_isKeyPressed(sfKeyLShift) && ((player.stamina > 0 && !player.cooldown) || (player.stamina >= 20 && player.cooldown))){
-        cameraSpeed = 250;
-        player.stamina -= 25 * deltaTime;
-        if (player.stamina < 0) {player.stamina = 0; player.cooldown = sfTrue;}
-        if (player.stamina >= 20) player.cooldown = sfFalse;
-    } else {
-        cameraSpeed = 100;
-        player.stamina += 5 * deltaTime;
-        if (player.stamina > 100) player.stamina = 100;
-    }
-    if (sfKeyboard_isKeyPressed(sfKeyF)){
-        Player_Shoot(args, &player);
-    }
 
     sfSprite_setPosition(player.playerSprite, sfView_getCenter(view));
 

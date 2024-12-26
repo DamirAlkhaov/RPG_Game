@@ -7,6 +7,9 @@
 sfSprite *fsprite;
 sfSprite *wsprite;
 
+GameTile *floor;
+GameTile *wall; 
+
 enum tiles {FLOOR, WALL};
 
 void GameMap_Init(GameMap *gameMap){
@@ -42,8 +45,8 @@ void GameMap_Init(GameMap *gameMap){
     wsprite = sfSprite_create();
 
     // making the game tile class
-    GameTile *floor = GameTile_Create(floorTXT, fsprite);
-    GameTile *wall = GameTile_Create(wallTXT, wsprite);
+    floor = GameTile_Create(floorTXT, fsprite);
+    wall = GameTile_Create(wallTXT, wsprite);
 
     //randing the tiles
     for (int i = 0; i < MAP_SIZE; i++){
@@ -68,11 +71,8 @@ void GameMap_Destroy(GameMap *gameMap){
     sfTexture_destroy(sfSprite_getTexture(wsprite));
     sfSprite_destroy(wsprite);
 
-    for (int i = 0; i < MAP_SIZE; i++){
-        for (int j = 0; j < MAP_SIZE; j++){
-            free(gameMap->tiles[i][j]);
-        }
-    }
+    free(floor);
+    free(wall);
 }
 
 void GameMap_Render(GameMap *map, sfView *view, sfRenderWindow *win) {

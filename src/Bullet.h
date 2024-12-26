@@ -6,12 +6,12 @@
 
 typedef struct {
     sfSprite *bulletSprite;
-    DIRECTIONS direction;
+    double dir;
     clock_t createdOn;
     sfVector2f pos;
 } Bullet;
 
 void Bullet_Init();
-void Bullet_Create(DIRECTIONS dir, sfVector2f pos);
+void Bullet_Create(double dir, sfVector2f pos);
 void Bullet_Update(ARGS *args);
 void Bullet_Destroy();
