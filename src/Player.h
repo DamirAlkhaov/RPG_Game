@@ -7,6 +7,7 @@ typedef struct {
     sfSprite *playerSprite;
     clock_t lastShot;
     float stamina;
+    float health;
     sfBool cooldown;
 } Player;
 

@@ -9,6 +9,7 @@ sfSprite *playerSprite;
 void Player_Init(Player *player){
     player->lastShot = clock();
     player->stamina = 100.f;
+    player->health = 100.f;
 
     //sprite
     playerSprite = sfSprite_create();

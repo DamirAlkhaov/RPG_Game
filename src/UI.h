@@ -1,11 +1,10 @@
+#pragma once
 #include <SFML/Window.h>
 #include "Args.h"
 #include "Player.h"
 
-void UI_Init();
+void UI_Init(Player *player);
 
-void UI_Update(ARGS *args, Player *player);
+void UI_Update(ARGS *args);
 
 void UI_Destroy();
-
-void UI_CreateText(sfText *text);
