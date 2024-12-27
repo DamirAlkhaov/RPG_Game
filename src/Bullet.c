@@ -50,8 +50,8 @@ void Bullet_Update(ARGS *args){
             continue;
         }
         
-        bullets[i]->pos.x += move.x * cos(bullets[i]->dir * 3.14/180) * sfTime_asSeconds(args->e);
-        bullets[i]->pos.y += move.y * sin(bullets[i]->dir * 3.14/180) * sfTime_asSeconds(args->e);
+        bullets[i]->pos.x += move.x * cos(bullets[i]->dir * PI/180) * sfTime_asSeconds(args->e);
+        bullets[i]->pos.y += move.y * sin(bullets[i]->dir * PI/180) * sfTime_asSeconds(args->e);
 
         sfSprite_setRotation(bulletSprite, bullets[i]->dir);
         sfSprite_setPosition(bulletSprite, bullets[i]->pos);

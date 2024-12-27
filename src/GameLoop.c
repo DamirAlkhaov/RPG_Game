@@ -33,19 +33,19 @@ void Loop_Update(ARGS *args){
         }  
 
         if (sfKeyboard_isKeyPressed(sfKeyD) && sfKeyboard_isKeyPressed(sfKeyW) && !moved){
-            sfView_move(view, (sfVector2f){cameraSpeed*deltaTime*cos(45 * 3.14/180), -cameraSpeed*deltaTime*sin(45 * 3.14/180)});
+            sfView_move(view, (sfVector2f){cameraSpeed*deltaTime*cos(45 * PI/180), -cameraSpeed*deltaTime*sin(45 * PI/180)});
             moved = sfTrue;
         }
         if (sfKeyboard_isKeyPressed(sfKeyA) && sfKeyboard_isKeyPressed(sfKeyW) && !moved){
-            sfView_move(view, (sfVector2f){-cameraSpeed*deltaTime*cos(45 * 3.14/180), -cameraSpeed*deltaTime*sin(45 * 3.14/180)});
+            sfView_move(view, (sfVector2f){-cameraSpeed*deltaTime*cos(45 * PI/180), -cameraSpeed*deltaTime*sin(45 * PI/180)});
             moved = sfTrue;
         }
         if (sfKeyboard_isKeyPressed(sfKeyA) && sfKeyboard_isKeyPressed(sfKeyS) && !moved){
-            sfView_move(view, (sfVector2f){-cameraSpeed*deltaTime*cos(45 * 3.14/180), cameraSpeed*deltaTime*sin(45 * 3.14/180)});
+            sfView_move(view, (sfVector2f){-cameraSpeed*deltaTime*cos(45 * PI/180), cameraSpeed*deltaTime*sin(45 * PI/180)});
             moved = sfTrue;
         }
         if (sfKeyboard_isKeyPressed(sfKeyD) && sfKeyboard_isKeyPressed(sfKeyS) && !moved){
-            sfView_move(view, (sfVector2f){cameraSpeed*deltaTime*cos(45 * 3.14/180), cameraSpeed*deltaTime*sin(45 * 3.14/180)});
+            sfView_move(view, (sfVector2f){cameraSpeed*deltaTime*cos(45 * PI/180), cameraSpeed*deltaTime*sin(45 * PI/180)});
             moved = sfTrue;
         }
 

@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <stdio.h>
 #include <SFML/Window/Mouse.h>
+#include <math.h>
 
 sfTexture *playerTXT;
 sfSprite *playerSprite;
@@ -34,7 +35,7 @@ void Player_Shoot(ARGS *args, Player *player){
         sfVector2f mousePosCoord = sfRenderWindow_mapPixelToCoords(args->window, mousePosPixel, args->view);
         sfVector2f playerPos = sfSprite_getPosition(player->playerSprite);
         sfVector2f relVec = {mousePosCoord.x - playerPos.x, mousePosCoord.y - playerPos.y};
-        double angle = atan2(relVec.y, relVec.x) * 180/M_PI;
+        double angle = atan2(relVec.y, relVec.x) * 180/PI;    
 
         Bullet_Create(angle, sfSprite_getPosition(player->playerSprite));
         player->lastShot = clock();
