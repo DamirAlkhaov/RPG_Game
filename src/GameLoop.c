@@ -17,7 +17,7 @@ Player player;
 sfSprite *crates[CRATE_LIMIT] = {NULL};
 
 void Loop_Init(ARGS *args){
-    GameMap_Init(&map);
+    GameMap_Init(args, &map);
     Player_Init(&player);
     Bullet_Init();
     UI_Init(args, &player);
