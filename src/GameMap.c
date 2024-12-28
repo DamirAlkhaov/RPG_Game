@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#define QUADRANTS 11
+#define QUADRANTS 21
 
 sfSprite *fsprite;
 sfSprite *wsprite;
@@ -95,6 +95,7 @@ void GameMap_Destroy(GameMap *gameMap){
 
 void GameMap_Render(GameMap *map, sfView *view, sfRenderWindow *win){
     float halfMap = MAP_SIZE/2;
+    float halfMap_Pixels = halfMap * 32;
     sfSprite_setOrigin(mapSprite, (sfVector2f){halfMap * 32, halfMap * 32});
     
     sfVector2f viewCenter = sfView_getCenter(view);
@@ -111,10 +112,10 @@ void GameMap_Render(GameMap *map, sfView *view, sfRenderWindow *win){
 
             float deltaX = viewCenter.x - tileX;
             float deltaY = viewCenter.y - tileY;
-            float intersectX = abs(deltaX) - ((viewSize.x) + halfMap);
-            float intersectY = abs(deltaY) - ((viewSize.y) + halfMap);
+            float intersectX = abs(deltaX) - ((viewSize.x/2) + halfMap_Pixels);
+            float intersectY = abs(deltaY) - ((viewSize.y/2) + halfMap_Pixels);
 
-            if (intersectX < 0 && intersectY < 0){
+            if ((intersectX < 0 && intersectY < 0)){
                 sum++;
                 sfSprite_setPosition(mapSprite, (sfVector2f){tileX, tileY});
                 sfRenderWindow_drawSprite(win, mapSprite, NULL);
