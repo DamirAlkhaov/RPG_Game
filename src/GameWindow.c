@@ -17,12 +17,12 @@ void GameWindow_Start(sfRenderWindow* myWindow){
     sfClock *cl = sfClock_create();
     sfTime elapsed;
 
-    Loop_Init();
-
     ARGS args = {myWindow, view, &event};
 
     sfView_zoom(view, 0.2);
-    //sfView_setCenter(view, (sfVector2f){400/5,400/5});
+    sfView_setCenter(view, (sfVector2f){0,0});
+
+    Loop_Init(&args);
 
     while (sfRenderWindow_isOpen(myWindow)){
         elapsed = sfClock_restart(cl);

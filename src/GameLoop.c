@@ -5,19 +5,24 @@
 #include <SFML/Window/Keyboard.h>
 #include <SFML/Window/Mouse.h>
 #include "UI.h"
+#include "crate.h"
+#include <stdlib.h>
+#include <time.h>
 
 
 float cameraSpeed = 100;
 
 GameMap map;
 Player player;
+sfSprite *crates[CRATE_LIMIT] = {NULL};
 
-void Loop_Init(){
+void Loop_Init(ARGS *args){
     GameMap_Init(&map);
     Player_Init(&player);
     Bullet_Init();
     UI_Init(&player);
-
+    Crate_Init();
+    Crate_Add(crates, (sfVector2f){54, 64});
 }
 
 void Loop_Update(ARGS *args){
@@ -29,6 +34,13 @@ void Loop_Update(ARGS *args){
 
     // do keyboard stuff here
     if (sfRenderWindow_hasFocus(win)){
+        if (sfKeyboard_isKeyPressed(sfKeyF)){
+            int randX = rand() % 10 - 4; randX *= 32;
+            int randY = rand() % 10 - 4; randY *= 32;
+            int playerX = sfView_getCenter(view).x;
+            int playerY = sfView_getCenter(view).y;
+            Crate_Add(crates, (sfVector2f){randX + playerX * 2, randY + playerY * 2});
+        }
         if (sfKeyboard_isKeyPressed(sfKeyEscape)){
             sfRenderWindow_close(win);
         }  
@@ -100,16 +112,18 @@ void Loop_Update(ARGS *args){
     char title[255];
     sprintf(title, "Menace | FPS:%d", (int)(1/deltaTime));
     sfRenderWindow_setTitle(win, title);
-    
-    // collisions here
-
 
     // update player sprite pos
     sfSprite_setPosition(player.playerSprite, sfView_getCenter(view));
 
+    // collisions here
+    Player_Collisions(args, &player, crates, 0.2);
+    Crate_Collisions(crates);
+
     //rendering
     GameMap_Render(&map, view, win);
     Bullet_Update(args);
+    Crate_Render(args, crates);
     sfRenderWindow_setView(win, view);
     sfRenderWindow_drawSprite(win, player.playerSprite, NULL);
     
@@ -122,4 +136,5 @@ void Loop_End(){
     Player_Destroy();
     Bullet_Destroy();
     UI_Destroy();
+    Crate_Destroy(crates);
 }

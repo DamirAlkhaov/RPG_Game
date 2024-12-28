@@ -16,3 +16,5 @@ void Player_Init(Player *player);
 void Player_Destroy();
 
 void Player_Shoot(ARGS *args, Player *player);
+
+void Player_Collisions(ARGS *args, Player *player, sfSprite *objs[], float push);

@@ -4,7 +4,7 @@
 #include "Player.h"
 
 
-void Loop_Init();
+void Loop_Init(ARGS *args);
 
 //Update game logic function, takes in sfTime which is Delta Time.
 void Loop_Update(ARGS *arg);

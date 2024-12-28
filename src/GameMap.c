@@ -80,30 +80,44 @@ void GameMap_Render(GameMap *map, sfView *view, sfRenderWindow *win) {
     float tileX;
     float tileY;
 
-    int left = viewLeft / 32;
-    int top = viewTop / 32;
-    int right = viewRight / 32;
-    int bottom = viewBottom /32;
+    float halfMap = MAP_SIZE/2;
+
+    int left = (viewLeft / 32) + halfMap;
+    int top = (viewTop / 32) + halfMap;
+    int right = (viewRight / 32) + halfMap;
+    int bottom = (viewBottom /32) + halfMap;
     if (left < 0) left = 0;
     if (top < 0) top = 0;
     if (bottom > map->size) bottom = map->size;
     if (right > map->size) right = map->size;
+
+    sfRenderTexture *mapTexture = sfRenderTexture_create(viewRight, viewBottom, sfFalse);
 
     //printf("l: %d t: %d b: %d r:%d\n", left, top, bottom, right);
     //rendering for loop.
     for (int i = left; i < right; i++) {
         for (int j = top; j < bottom; j++) { 
             // tile position
-            tileX = i * 32;
-            tileY = j * 32;
+            tileX = (i - halfMap) * 32;
+            tileY = (j - halfMap) * 32;
             
             
             sfSprite_setPosition(map->tiles[i][j]->sprite, (sfVector2f){tileX, tileY});
-    
+            sfRenderTexture_drawSprite(mapTexture, map->tiles[i][j]->sprite, NULL);
             // Render tile
-            GameTile_Render(win, map->tiles[i][j]);
+            //GameTile_Render(win, map->tiles[i][j]);
             
         }
     }
+
+    sfRenderTexture_display(mapTexture);
+    sfSprite* renderTextureSprite = sfSprite_create();
+    sfSprite_setTexture(renderTextureSprite, sfRenderTexture_getTexture(mapTexture), sfTrue);
+
+    sfRenderWindow_drawSprite(win, renderTextureSprite, NULL);
+
+    sfRenderTexture_destroy(mapTexture);
+    sfSprite_destroy(renderTextureSprite);
+
     
 }

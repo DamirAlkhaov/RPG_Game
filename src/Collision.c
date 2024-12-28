@@ -1,33 +1,31 @@
 #include "Collision.h"
+#include <math.h>
 
-void Collision_Check(sfSprite *obj, sfSprite *obj2){
-    float deltaX = sfSprite_getOrigin(obj).x - sfSprite_getOrigin(obj2).x;
-    float deltaY = sfSprite_getOrigin(obj).y - sfSprite_getOrigin(obj2).y;
+sfVector2f Collision_Check(sfVector2f obj, sfVector2f obj2){
+    float deltaX = obj.x - obj2.x;
+    float deltaY = obj.y - obj2.y;
 
     float intersectX = abs(deltaX) - (31);
     float intersectY = abs(deltaY) - (31);   
 
     //printf("%f %f\n", intersectX, intersectY);
     if (intersectX < 0 && intersectY < 0){
-        float push = 0.2;
         if (intersectX > intersectY){
             if (deltaX > 0) {
-                sfSprite_move(obj, (sfVector2f){-intersectX * (1 - push), 0.f});
-                sfSprite_move(obj2, (sfVector2f){intersectX * push, 0.f});
+                return (sfVector2f){-intersectX, 0.f};
             } else {
-                sfSprite_move(obj, (sfVector2f){intersectX* (1 - push), 0.f});
-                sfSprite_move(obj2, (sfVector2f){-intersectX * push, 0.f});
+                return (sfVector2f){intersectX, 0.f};
             }
             
         } else {
             if (deltaY > 0) {
-                sfSprite_move(obj, (sfVector2f){0.f, -intersectY* (1 - push)});
-                sfSprite_move(obj2, (sfVector2f){0.f, intersectY * push});
+                return (sfVector2f){ 0.f, -intersectY};
             } else {
-                sfSprite_move(obj, (sfVector2f){0.f, intersectY* (1 - push)});
-                sfSprite_move(obj2, (sfVector2f){0.f, -intersectY* push});
+                return (sfVector2f){ 0.f, intersectY};
             }
             
         }
     }
+
+    return (sfVector2f){0, 0};
 }

@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <SFML/Window/Mouse.h>
 #include <math.h>
+#include "Collision.h"
+#include "crate.h"
 
 sfTexture *playerTXT;
 sfSprite *playerSprite;
@@ -42,4 +44,26 @@ void Player_Shoot(ARGS *args, Player *player){
         player->lastShot = clock();
     }
 
+}
+
+void Player_Collisions(ARGS *args, Player *player, sfSprite *objs[], float push){
+    
+    sfVector2f playPos = sfSprite_getPosition(player->playerSprite);
+    for (int i = 0; i < CRATE_LIMIT; i++){
+        if (objs[i] == NULL) continue;
+        sfVector2f objPos = sfSprite_getPosition(objs[i]);
+        if (objPos.x + 5 * 32 < playPos.x || objPos.x > playPos.x + 5 * 32 || objPos.y + 5 * 32 < playPos.y || objPos.y > playPos.y + 5 * 32){
+            continue;
+        }
+        sfVector2f moveVec = Collision_Check(playPos, objPos);
+        sfVector2f playerVec = moveVec;
+        sfVector2f blockVec = moveVec;
+        playerVec.x *= 1 - push;
+        playerVec.y *= 1 - push;
+        blockVec.x *= -push;
+        blockVec.y *= -push;
+
+        sfView_move(args->view, playerVec);
+        sfSprite_move(objs[i], blockVec);
+    }
 }
