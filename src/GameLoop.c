@@ -20,7 +20,7 @@ void Loop_Init(ARGS *args){
     GameMap_Init(&map);
     Player_Init(&player);
     Bullet_Init();
-    UI_Init(&player);
+    UI_Init(args, &player);
     Crate_Init();
     Crate_Add(crates, (sfVector2f){54, 64});
 }
@@ -85,12 +85,10 @@ void Loop_Update(ARGS *args){
         }
         if (sfKeyboard_isKeyPressed(sfKeyLBracket)){
             sfView_zoom(view, 1 + 2 * deltaTime);
-            UI_SetZoom(1 + 2 * deltaTime);
             
         }
         if (sfKeyboard_isKeyPressed(sfKeyRBracket)){
             sfView_zoom(view, 1 - 2 * deltaTime);
-            UI_SetZoom(1 - 2 * deltaTime);
             
         }
         if (sfKeyboard_isKeyPressed(sfKeyLShift) && ((player.stamina > 0 && !player.cooldown) || (player.stamina >= 20 && player.cooldown))){

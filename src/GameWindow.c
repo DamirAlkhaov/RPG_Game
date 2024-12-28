@@ -11,7 +11,7 @@ void GameWindow_Start(sfRenderWindow* myWindow){
     sfView *view = sfView_create();
     
     sfEvent event;
-    myWindow = sfRenderWindow_create(vm, "Game", sfClose, NULL);
+    myWindow = sfRenderWindow_create(vm, "Game", sfResize | sfClose, NULL);
     //sfRenderWindow_setVerticalSyncEnabled(myWindow, (sfBool)1);
 
     sfClock *cl = sfClock_create();
@@ -33,9 +33,9 @@ void GameWindow_Start(sfRenderWindow* myWindow){
                 sfRenderWindow_close(myWindow);
             }
 
-            //if (event.type == sfEvtResized){
-            //    sfView_setSize(view, (sfVector2f){event.size.width, event.size.height});
-            //}
+            if (event.type == sfEvtResized){
+                sfView_setSize(view, (sfVector2f){event.size.width, event.size.height});
+            }
         }
 
         //buffer

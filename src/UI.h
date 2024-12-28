@@ -3,7 +3,7 @@
 #include "Args.h"
 #include "Player.h"
 
-void UI_Init(Player *player);
+void UI_Init(ARGS *args, Player *player);
 
 void UI_Update(ARGS *args);
 

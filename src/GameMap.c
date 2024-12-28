@@ -91,7 +91,7 @@ void GameMap_Render(GameMap *map, sfView *view, sfRenderWindow *win) {
     if (bottom > map->size) bottom = map->size;
     if (right > map->size) right = map->size;
 
-    sfRenderTexture *mapTexture = sfRenderTexture_create(viewRight, viewBottom, sfFalse);
+    // sfRenderTexture *mapTexture = sfRenderTexture_create(800, 800, sfFalse);
 
     //printf("l: %d t: %d b: %d r:%d\n", left, top, bottom, right);
     //rendering for loop.
@@ -103,21 +103,9 @@ void GameMap_Render(GameMap *map, sfView *view, sfRenderWindow *win) {
             
             
             sfSprite_setPosition(map->tiles[i][j]->sprite, (sfVector2f){tileX, tileY});
-            sfRenderTexture_drawSprite(mapTexture, map->tiles[i][j]->sprite, NULL);
-            // Render tile
-            //GameTile_Render(win, map->tiles[i][j]);
             
+            // Render tile
+            GameTile_Render(win, map->tiles[i][j]);
         }
     }
-
-    sfRenderTexture_display(mapTexture);
-    sfSprite* renderTextureSprite = sfSprite_create();
-    sfSprite_setTexture(renderTextureSprite, sfRenderTexture_getTexture(mapTexture), sfTrue);
-
-    sfRenderWindow_drawSprite(win, renderTextureSprite, NULL);
-
-    sfRenderTexture_destroy(mapTexture);
-    sfSprite_destroy(renderTextureSprite);
-
-    
 }
