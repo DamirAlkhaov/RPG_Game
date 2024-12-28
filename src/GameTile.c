@@ -12,6 +12,9 @@ GameTile* GameTile_Create(sfTexture *texture, sfSprite *sprite) {
     if (sprite != NULL){
         printf("Sprite successfully set\n");
     }
+
+    sfSprite_setOrigin(sprite, (sfVector2f){16, 16});
+
     tile->sprite = sprite;
     return tile;
 }

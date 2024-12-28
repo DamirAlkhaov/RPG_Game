@@ -5,7 +5,11 @@ sfFont *dayDream_font;
 sfText *staminaText;
 sfText *healthText;
 Player *playerPointer;
-float lastViewSize = 200;
+float textScale = 1;
+
+void UI_SetZoom(float zoomDT){
+    textScale *= zoomDT;
+}
 
 void UI_CreateText(sfText *text, float scale){
     sfText_setFont(text, dayDream_font);
@@ -22,7 +26,7 @@ void UI_PositionText(sfVector2f viewCenter, sfVector2f viewSize, sfText *text, s
 
     // positioning and scaling the text according to view.
     sfText_setPosition(text, (sfVector2f){viewLeft, viewTop});
-    sfText_scale(text, (sfVector2f){viewSize.x/lastViewSize, viewSize.y/lastViewSize});
+    sfText_setScale(text, (sfVector2f){textScale * 0.2, textScale * 0.2});
 }
 
 void UI_Init(Player *playerP){
@@ -30,8 +34,8 @@ void UI_Init(Player *playerP){
     if (dayDream_font == NULL) puts("failed to load font.");
     staminaText = sfText_create();
     healthText = sfText_create();
-    UI_CreateText(staminaText, 1);
-    UI_CreateText(healthText, 1);
+    UI_CreateText(staminaText, textScale);
+    UI_CreateText(healthText, textScale / 2);
     playerPointer = playerP;
 }
 
@@ -41,8 +45,8 @@ void UI_Update(ARGS *args){
     sfVector2f viewSize = sfView_getSize(args->view);
     
     UI_PositionText(viewCenter, viewSize, staminaText, (sfVector2f){10, 10});
-    UI_PositionText(viewCenter, viewSize, healthText, (sfVector2f){10,700});
-    lastViewSize = viewSize.x;
+    UI_PositionText(viewCenter, viewSize, healthText, (sfVector2f){10,60});
+    //textScale = 1;
 
     char textStamina[20];
     sprintf_s(textStamina, 20 * sizeof(char), "Stamina: %.0f", playerPointer->stamina);

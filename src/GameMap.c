@@ -21,10 +21,6 @@ void GameMap_Init(GameMap *gameMap){
     sfTexture *floorTXT = sfTexture_createFromFile("textures/floor.png", NULL);
     if (floorTXT == NULL){
         printf("Texture failed to load.\n");
-        floorTXT = sfTexture_createFromFile("bin/textures/floor.png", NULL);
-        if (floorTXT == NULL){
-            printf("Texture for sure doesn't exist.\n");
-        }
     } else {
         printf("Texture loaded successfully.\n");
     }
@@ -32,10 +28,6 @@ void GameMap_Init(GameMap *gameMap){
     sfTexture *wallTXT = sfTexture_createFromFile("textures/wall.png", NULL);
     if (wallTXT == NULL){
         printf("Texture failed to load.\n");
-        wallTXT = sfTexture_createFromFile("C:\\coding\\sfmlGame\\bin\\textures\\wall.png", NULL);
-        if (wallTXT == NULL){
-            printf("Texture for sure doesn't exist.\n");
-        }
     } else {
         printf("Texture loaded successfully.\n");
     }
@@ -52,7 +44,7 @@ void GameMap_Init(GameMap *gameMap){
     for (int i = 0; i < MAP_SIZE; i++){
         for (int j = 0; j < MAP_SIZE; j++){
             int r = 1 + rand() % 100;
-            if (r <= 80){
+            if (r <= 90){
                 gameMap->tiles[i][j] = floor;
                 gameMap->tiles[i][j]->wall = sfFalse;
             } else {

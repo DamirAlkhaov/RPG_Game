@@ -7,4 +7,6 @@ void UI_Init(Player *player);
 
 void UI_Update(ARGS *args);
 
+void UI_SetZoom(float zoomDT);
+
 void UI_Destroy();

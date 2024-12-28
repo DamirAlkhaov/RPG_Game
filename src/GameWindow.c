@@ -12,7 +12,7 @@ void GameWindow_Start(sfRenderWindow* myWindow){
     
     sfEvent event;
     myWindow = sfRenderWindow_create(vm, "Game", sfClose, NULL);
-    sfRenderWindow_setVerticalSyncEnabled(myWindow, (sfBool)1);
+    //sfRenderWindow_setVerticalSyncEnabled(myWindow, (sfBool)1);
 
     sfClock *cl = sfClock_create();
     sfTime elapsed;
@@ -22,7 +22,7 @@ void GameWindow_Start(sfRenderWindow* myWindow){
     ARGS args = {myWindow, view, &event};
 
     sfView_zoom(view, 0.2);
-    sfView_setCenter(view, (sfVector2f){400/5,400/5});
+    //sfView_setCenter(view, (sfVector2f){400/5,400/5});
 
     while (sfRenderWindow_isOpen(myWindow)){
         elapsed = sfClock_restart(cl);
