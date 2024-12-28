@@ -77,6 +77,8 @@ void GameMap_Init(ARGS *args, GameMap *gameMap){
     mapSprite = sfSprite_create();
     sfSprite_setTexture(mapSprite, sfRenderTexture_getTexture(mapTexture), 1);
 
+    //sfImage_saveToFile(sfTexture_copyToImage(sfRenderTexture_getTexture(mapTexture)), "output/img.png");
+
     printf("Game map init done.\n");
 }
 
@@ -87,7 +89,8 @@ void GameMap_Destroy(GameMap *gameMap){
     sfTexture_destroy(sfSprite_getTexture(wsprite));
     sfSprite_destroy(wsprite);
 
-    sfRenderTexture_destroy(mapTexture);
+    //sfRenderTexture_destroy(mapTexture);
+    sfSprite_destroy(mapSprite);
 
     //free(floor);
     //free(wall);
@@ -123,7 +126,7 @@ void GameMap_Render(GameMap *map, sfView *view, sfRenderWindow *win){
         }
     }
     
-    printf("%d\n", sum);
+    //printf("%d\n", sum);
 }
 
 /*
