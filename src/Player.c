@@ -33,7 +33,7 @@ void Player_Destroy(){
 }
 
 void Player_Shoot(ARGS *args, Player *player){
-    if (player->lastShot + 100 < clock()){
+    if (player->lastShot + 250 < clock()){
         sfVector2i mousePosPixel = sfMouse_getPositionRenderWindow(args->window);
         sfVector2f mousePosCoord = sfRenderWindow_mapPixelToCoords(args->window, mousePosPixel, args->view);
         sfVector2f playerPos = sfSprite_getPosition(player->playerSprite);
@@ -66,4 +66,6 @@ void Player_Collisions(ARGS *args, Player *player, sfSprite *objs[], float push)
         sfView_move(args->view, playerVec);
         sfSprite_move(objs[i], blockVec);
     }
+
+    Bullet_Collisions(objs);
 }

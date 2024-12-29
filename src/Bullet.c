@@ -1,7 +1,9 @@
 #include "Bullet.h"
 #include <stdio.h>
 #include <stdlib.h>
-#define BULLET_SPEED 1000
+#include "Collision.h"
+#include "crate.h"
+#define BULLET_SPEED 500
 
 sfTexture *bulletTXT;
 sfSprite *bulletSprite;
@@ -62,4 +64,21 @@ void Bullet_Update(ARGS *args){
 
 void Bullet_Destroy(){
     sfSprite_destroy(bulletSprite);
+}
+
+void Bullet_Collisions(sfSprite *objs[]){
+    for (size_t i = 0; i < BULLETS_LIMIT; i++){
+        if (bullets[i] == NULL) continue;
+        for (size_t j = 0; j < CRATE_LIMIT; j++){
+            if (objs[j] == NULL) continue;
+            sfVector2f iPos = sfSprite_getPosition(bullets[i]->bulletSprite);
+            sfVector2f jPos = sfSprite_getPosition(objs[j]);
+            sfBool touching = Collision_Check_Bullets(iPos, jPos);
+            if (!touching) continue;
+
+            //bullets[i] = NULL;
+            objs[j] = NULL;
+        }
+    }
+    
 }

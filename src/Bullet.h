@@ -15,3 +15,4 @@ void Bullet_Init();
 void Bullet_Create(double dir, sfVector2f pos);
 void Bullet_Update(ARGS *args);
 void Bullet_Destroy();
+void Bullet_Collisions(sfSprite *objs[]);

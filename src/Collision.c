@@ -1,4 +1,5 @@
 #include "Collision.h"
+#include <stdio.h>
 #include <math.h>
 
 sfVector2f Collision_Check(sfVector2f obj, sfVector2f obj2){
@@ -28,4 +29,14 @@ sfVector2f Collision_Check(sfVector2f obj, sfVector2f obj2){
     }
 
     return (sfVector2f){0, 0};
+}
+
+sfBool Collision_Check_Bullets(sfVector2f obj, sfVector2f obj2){
+    float deltaX = abs(obj.x - obj2.x);
+    float deltaY = abs(obj.y - obj2.y);   
+    if (deltaX < 20 && deltaY < 20) {
+        return sfTrue;
+    } else {
+        return sfFalse;
+    }
 }
