@@ -66,6 +66,4 @@ void Player_Collisions(ARGS *args, Player *player, sfSprite *objs[], float push)
         sfView_move(args->view, playerVec);
         sfSprite_move(objs[i], blockVec);
     }
-
-    Bullet_Collisions(objs);
 }

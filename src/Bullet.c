@@ -76,7 +76,7 @@ void Bullet_Collisions(sfSprite *objs[]){
             sfBool touching = Collision_Check_Bullets(iPos, jPos);
             if (!touching) continue;
 
-            //bullets[i] = NULL;
+            bullets[i]->createdOn = 0;
             objs[j] = NULL;
         }
     }

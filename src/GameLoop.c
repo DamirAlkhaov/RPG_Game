@@ -6,6 +6,7 @@
 #include <SFML/Window/Mouse.h>
 #include "UI.h"
 #include "crate.h"
+#include "Bullet.h"
 #include <stdlib.h>
 #include <time.h>
 
@@ -116,6 +117,7 @@ void Loop_Update(ARGS *args){
     // collisions here
     Player_Collisions(args, &player, crates, 0.2);
     Crate_Collisions(crates);
+    Bullet_Collisions(crates);
 
     //rendering
     GameMap_Render(view, win);
