@@ -12,12 +12,11 @@
 
 float cameraSpeed = 100;
 
-GameMap map;
 Player player;
 sfSprite *crates[CRATE_LIMIT] = {NULL};
 
 void Loop_Init(ARGS *args){
-    GameMap_Init(args, &map);
+    GameMap_Init();
     Player_Init(&player);
     Bullet_Init();
     UI_Init(args, &player);
@@ -119,7 +118,7 @@ void Loop_Update(ARGS *args){
     Crate_Collisions(crates);
 
     //rendering
-    GameMap_Render(&map, view, win);
+    GameMap_Render(view, win);
     Bullet_Update(args);
     Crate_Render(args, crates);
     sfRenderWindow_setView(win, view);
@@ -130,7 +129,7 @@ void Loop_Update(ARGS *args){
 }
 
 void Loop_End(){
-    GameMap_Destroy(&map);
+    GameMap_Destroy();
     Player_Destroy();
     Bullet_Destroy();
     UI_Destroy();

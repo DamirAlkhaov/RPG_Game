@@ -11,13 +11,9 @@ sfSprite *wsprite;
 sfRenderTexture *mapTexture;
 sfSprite *mapSprite;
 
-//GameTile *floor;
-//GameTile *wall; 
-
 enum tiles {FLOOR, WALL};
 
-void GameMap_Init(ARGS *args, GameMap *gameMap){
-    gameMap->size = MAP_SIZE;
+void GameMap_Init(){
     mapTexture = sfRenderTexture_create(MAP_SIZE * 32, MAP_SIZE * 32, sfFalse);
 
     //texture loading
@@ -43,13 +39,6 @@ void GameMap_Init(ARGS *args, GameMap *gameMap){
 
     sfSprite_setTexture(fsprite, floorTXT, 1);
     sfSprite_setTexture(wsprite, wallTXT, 1);
-
-    //sfSprite_setOrigin(fsprite, center);
-    //sfSprite_setOrigin(wsprite, center);
-
-    // making the game tile class
-    //floor = GameTile_Create(floorTXT, fsprite);
-    //wall = GameTile_Create(wallTXT, wsprite);
 
     float tileX;
     float tileY;
@@ -82,21 +71,18 @@ void GameMap_Init(ARGS *args, GameMap *gameMap){
     printf("Game map init done.\n");
 }
 
-void GameMap_Destroy(GameMap *gameMap){
+void GameMap_Destroy(){
     sfTexture_destroy(sfSprite_getTexture(fsprite));
     sfSprite_destroy(fsprite);
 
     sfTexture_destroy(sfSprite_getTexture(wsprite));
     sfSprite_destroy(wsprite);
 
-    //sfRenderTexture_destroy(mapTexture);
+    sfRenderTexture_destroy(mapTexture);
     sfSprite_destroy(mapSprite);
-
-    //free(floor);
-    //free(wall);
 }
 
-void GameMap_Render(GameMap *map, sfView *view, sfRenderWindow *win){
+void GameMap_Render(sfView *view, sfRenderWindow *win){
     float halfMap = MAP_SIZE/2;
     float halfMap_Pixels = halfMap * 32;
     sfSprite_setOrigin(mapSprite, (sfVector2f){halfMap * 32, halfMap * 32});
