@@ -31,7 +31,7 @@ void GameMap_Init(){
         printf("Texture loaded successfully.\n");
     }
 
-    sfTexture *wallTXT = sfTexture_createFromFile("textures/wall.png", NULL);
+    sfTexture *wallTXT = sfTexture_createFromFile("textures/wall_red.png", NULL);
     if (wallTXT == NULL){
         printf("Texture failed to load.\n");
     } else {
@@ -54,8 +54,8 @@ void GameMap_Init(){
     for (int i = 0; i < MAP_SIZE; i++){
         for (int j = 0; j < MAP_SIZE; j++){
 
-            tileX = (i ) * 32;
-            tileY = (j ) * 32;
+            tileX = (i) * 32;
+            tileY = (j) * 32;
 
             int r = 1 + rand() % 100;
             if (r <= 50){
@@ -69,6 +69,7 @@ void GameMap_Init(){
     }
 
     sfRenderTexture_display(mapTexture);
+    sfRenderTexture_generateMipmap(mapTexture);
 
     mapSprite = sfSprite_create();
     sfSprite_setTexture(mapSprite, sfRenderTexture_getTexture(mapTexture), 1);
