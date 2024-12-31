@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <SFML/System/Thread.h>
 #include "GameWindow.h"
+#include <time.h>
 
 void main(){
+    srand(time(NULL));
     
     sfRenderWindow* mWindow;
     

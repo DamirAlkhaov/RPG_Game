@@ -4,7 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <pthread.h>
-#define QUADRANTS 21
+#include "perlin.h"
+#define QUADRANTS 7
 
 sfSprite *fsprite;
 sfSprite *wsprite;
@@ -31,7 +32,7 @@ void GameMap_Init(){
         printf("Texture loaded successfully.\n");
     }
 
-    sfTexture *wallTXT = sfTexture_createFromFile("textures/wall_red.png", NULL);
+    sfTexture *wallTXT = sfTexture_createFromFile("textures/wall.png", NULL);
     if (wallTXT == NULL){
         printf("Texture failed to load.\n");
     } else {
@@ -57,7 +58,7 @@ void GameMap_Init(){
             tileX = (i) * 32;
             tileY = (j) * 32;
 
-            int r = 1 + rand() % 100;
+            int r = perlin2d(i, j, 0.1, 1, 1) * 100;
             if (r <= 50){
                 sfSprite_setPosition(fsprite, (sfVector2f){tileX, tileY});
                 sfRenderTexture_drawSprite(mapTexture, fsprite, NULL);

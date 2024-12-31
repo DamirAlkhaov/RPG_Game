@@ -39,7 +39,7 @@ void Loop_Update(ARGS *args){
             int randY = rand() % 10 - 4; randY *= 32;
             int playerX = sfView_getCenter(view).x;
             int playerY = sfView_getCenter(view).y;
-            Crate_Add(crates, (sfVector2f){0, 0});
+            Crate_Add(crates, (sfVector2f){randX + playerX, randY + playerY});
         }
         if (sfKeyboard_isKeyPressed(sfKeyEscape)){
             sfRenderWindow_close(win);
