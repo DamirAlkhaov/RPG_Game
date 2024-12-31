@@ -81,7 +81,7 @@ void *MC_BulletCol(void *arg){
         //if bullet doesn't exist, do nothing.
         if (bullets[i] == NULL) continue;
 
-        printf("Thread %d is working on bullet %d\n", args->start+1, i);
+        //printf("Thread %d is working on bullet %d\n", args->start+1, i);
 
         //cycle through the crates and check for collision.
         for (size_t j = 0; j < CRATE_LIMIT; j++){
