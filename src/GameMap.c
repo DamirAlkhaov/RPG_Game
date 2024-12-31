@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <pthread.h>
 #define QUADRANTS 21
 
 sfSprite *fsprite;
@@ -11,7 +12,13 @@ sfSprite *wsprite;
 sfRenderTexture *mapTexture;
 sfSprite *mapSprite;
 
+pthread_t *mapSaveThread;
+
 enum tiles {FLOOR, WALL};
+
+void *save_Map(void *mapTexture){
+    sfImage_saveToFile(sfTexture_copyToImage(sfRenderTexture_getTexture(mapTexture)), "output/img.png");
+}
 
 void GameMap_Init(){
     mapTexture = sfRenderTexture_create(MAP_SIZE * 32, MAP_SIZE * 32, sfFalse);
@@ -66,7 +73,7 @@ void GameMap_Init(){
     mapSprite = sfSprite_create();
     sfSprite_setTexture(mapSprite, sfRenderTexture_getTexture(mapTexture), 1);
 
-    //sfImage_saveToFile(sfTexture_copyToImage(sfRenderTexture_getTexture(mapTexture)), "output/img.png");
+    pthread_create(mapSaveThread, NULL, save_Map, (void*)mapTexture);
 
     printf("Game map init done.\n");
 }
