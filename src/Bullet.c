@@ -76,7 +76,7 @@ void *MC_BulletCol(void *arg){
     BULLET_ARG *args = (BULLET_ARG *)arg;
     sfSprite **objs = args->objs;
     for (int i = 0; i < BULLETS_LIMIT; i++){
-        //conditional for the threads.
+        //conditional that skips half the bullets. this can easily be added into the for loop conditional instead but decided to do this instead.
         if ((i + args->start) % 2 != 0) continue;
         //if bullet doesn't exist, do nothing.
         if (bullets[i] == NULL) continue;
