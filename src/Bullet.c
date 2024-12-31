@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Collision.h"
+#include <pthread.h>
 #include "crate.h"
 #define BULLET_SPEED 500
 
@@ -66,9 +67,23 @@ void Bullet_Destroy(){
     sfSprite_destroy(bulletSprite);
 }
 
-void Bullet_Collisions(sfSprite *objs[]){
-    for (size_t i = 0; i < BULLETS_LIMIT; i++){
+typedef struct {
+    sfSprite **objs;
+    int start;
+} BULLET_ARG;
+
+void *MC_BulletCol(void *arg){
+    BULLET_ARG *args = (BULLET_ARG *)arg;
+    sfSprite **objs = args->objs;
+    for (int i = 0; i < BULLETS_LIMIT; i++){
+        //conditional for the threads.
+        if ((i + args->start) % 2 != 0) continue;
+        //if bullet doesn't exist, do nothing.
         if (bullets[i] == NULL) continue;
+
+        printf("Thread %d is working on bullet %d\n", args->start+1, i);
+
+        //cycle through the crates and check for collision.
         for (size_t j = 0; j < CRATE_LIMIT; j++){
             if (objs[j] == NULL) continue;
             sfVector2f iPos = sfSprite_getPosition(bullets[i]->bulletSprite);
@@ -80,5 +95,24 @@ void Bullet_Collisions(sfSprite *objs[]){
             objs[j] = NULL;
         }
     }
+}
+
+void Bullet_Collisions(sfSprite **objs){
+    pthread_t thread1;
+    pthread_t thread2;
+    
+    BULLET_ARG obj1;
+    obj1.objs = objs;
+    obj1.start = 0;
+    pthread_create(&thread1, NULL, MC_BulletCol, (void *)&obj1);
+
+    BULLET_ARG obj2;
+    obj2.objs = objs;
+    obj2.start = 1;
+    pthread_create(&thread2, NULL, MC_BulletCol, (void *)&obj2);
+
+    pthread_join(thread1, NULL);
+    pthread_join(thread2, NULL);
     
 }
+
