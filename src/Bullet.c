@@ -63,6 +63,7 @@ void Bullet_Update(ARGS *args){
 }
 
 void Bullet_Destroy(){
+    sfTexture_destroy(bulletTXT);
     sfSprite_destroy(bulletSprite);
 }
 
@@ -92,6 +93,7 @@ void MC_BulletCol(void *arg){
             if (touching) {
 
                 bullets[i]->createdOn = 0;
+                sfSprite_destroy(objs[j]);
                 objs[j] = NULL;
                 break;
             }

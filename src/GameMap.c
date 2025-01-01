@@ -74,8 +74,8 @@ void GameMap_Init(){
     mapSprite = sfSprite_create();
     sfSprite_setTexture(mapSprite, sfRenderTexture_getTexture(mapTexture), 1);
 
-    mapSaveThread = sfThread_create(&save_Map, (void *)mapTexture);
-    sfThread_launch(mapSaveThread);
+    //mapSaveThread = sfThread_create(&save_Map, (void *)mapTexture);
+    //sfThread_launch(mapSaveThread);
 
     printf("Game map init done.\n");
 }
