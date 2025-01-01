@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <pthread.h>
 #include "perlin.h"
 #define QUADRANTS 7
 
@@ -13,11 +12,11 @@ sfSprite *wsprite;
 sfRenderTexture *mapTexture;
 sfSprite *mapSprite;
 
-pthread_t *mapSaveThread;
+sfThread *mapSaveThread;
 
 enum tiles {FLOOR, WALL};
 
-void *save_Map(void *mapTexture){
+void save_Map(void *mapTexture){
     sfImage_saveToFile(sfTexture_copyToImage(sfRenderTexture_getTexture(mapTexture)), "output/img.png");
 }
 
@@ -75,7 +74,8 @@ void GameMap_Init(){
     mapSprite = sfSprite_create();
     sfSprite_setTexture(mapSprite, sfRenderTexture_getTexture(mapTexture), 1);
 
-    pthread_create(mapSaveThread, NULL, save_Map, (void*)mapTexture);
+    mapSaveThread = sfThread_create(&save_Map, (void *)mapTexture);
+    sfThread_launch(mapSaveThread);
 
     printf("Game map init done.\n");
 }

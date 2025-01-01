@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Collision.h"
-#include <pthread.h>
 #include "crate.h"
 #define BULLET_SPEED 500
 
@@ -72,7 +71,7 @@ typedef struct {
     int start;
 } BULLET_ARG;
 
-void *MC_BulletCol(void *arg){
+void MC_BulletCol(void *arg){
     BULLET_ARG *args = (BULLET_ARG *)arg;
     sfSprite **objs = args->objs;
     for (int i = 0; i < BULLETS_LIMIT; i++){
@@ -98,21 +97,24 @@ void *MC_BulletCol(void *arg){
 }
 
 void Bullet_Collisions(sfSprite **objs){
-    pthread_t thread1;
-    pthread_t thread2;
+    sfThread *thread1;
+    sfThread *thread2;
     
     BULLET_ARG obj1;
     obj1.objs = objs;
     obj1.start = 0;
-    pthread_create(&thread1, NULL, MC_BulletCol, (void *)&obj1);
+    thread1 = sfThread_create(&MC_BulletCol, (void *)&obj1);
 
     BULLET_ARG obj2;
     obj2.objs = objs;
     obj2.start = 1;
-    pthread_create(&thread2, NULL, MC_BulletCol, (void *)&obj2);
+    thread2 = sfThread_create(&MC_BulletCol, (void *)&obj2);
 
-    pthread_join(thread1, NULL);
-    pthread_join(thread2, NULL);
+    sfThread_launch(thread1);
+    sfThread_launch(thread2);
+
+    sfThread_wait(thread1);
+    sfThread_wait(thread2);
     
 }
 
