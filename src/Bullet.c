@@ -88,9 +88,9 @@ void MC_BulletCol(void *arg){
             sfVector2f iPos = bullets[i]->pos;
             sfVector2f jPos = sfSprite_getPosition(objs[j]);
             sfBool touching = Collision_Check_Bullets(iPos, jPos);
-            printf("%d\n", touching);
+
             if (touching) {
-                printf("i: %d\n", i);
+
                 bullets[i]->createdOn = 0;
                 objs[j] = NULL;
                 break;
