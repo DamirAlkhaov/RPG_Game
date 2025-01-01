@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "Collision.h"
 #include "crate.h"
-#define BULLET_SPEED 500
+#define BULLET_SPEED 1000
 
 sfTexture *bulletTXT;
 sfSprite *bulletSprite;
@@ -85,18 +85,23 @@ void MC_BulletCol(void *arg){
         //cycle through the crates and check for collision.
         for (size_t j = 0; j < CRATE_LIMIT; j++){
             if (objs[j] == NULL) continue;
-            sfVector2f iPos = sfSprite_getPosition(bullets[i]->bulletSprite);
+            sfVector2f iPos = bullets[i]->pos;
             sfVector2f jPos = sfSprite_getPosition(objs[j]);
             sfBool touching = Collision_Check_Bullets(iPos, jPos);
-            if (!touching) continue;
-
-            bullets[i]->createdOn = 0;
-            objs[j] = NULL;
+            printf("%d\n", touching);
+            if (touching) {
+                printf("i: %d\n", i);
+                bullets[i]->createdOn = 0;
+                objs[j] = NULL;
+                break;
+            }
+            
         }
     }
 }
 
 void Bullet_Collisions(sfSprite **objs){
+    
     sfThread *thread1;
     sfThread *thread2;
     
@@ -115,6 +120,5 @@ void Bullet_Collisions(sfSprite **objs){
 
     sfThread_wait(thread1);
     sfThread_wait(thread2);
-    
 }
 
