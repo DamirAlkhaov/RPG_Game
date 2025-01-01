@@ -120,5 +120,8 @@ void Bullet_Collisions(sfSprite **objs){
 
     sfThread_wait(thread1);
     sfThread_wait(thread2);
+
+    sfThread_destroy(thread1);
+    sfThread_destroy(thread2);
 }
 

@@ -1,5 +1,5 @@
 #include "Args.h"
-#define MAP_SIZE 500 // 500 works well on the uni laptop.
+#define MAP_SIZE 250 // 500 works well on the uni laptop.
 
 //Initialize the game map
 void GameMap_Init();

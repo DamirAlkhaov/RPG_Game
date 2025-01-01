@@ -17,7 +17,7 @@ sfThread *mapSaveThread;
 enum tiles {FLOOR, WALL};
 
 void save_Map(void *mapTexture){
-    sfImage_saveToFile(sfTexture_copyToImage(sfRenderTexture_getTexture(mapTexture)), "output/img.png");
+    //sfImage_saveToFile(sfTexture_copyToImage(sfRenderTexture_getTexture(mapTexture)), "output/img.png");
 }
 
 void GameMap_Init(){
@@ -89,6 +89,8 @@ void GameMap_Destroy(){
 
     sfRenderTexture_destroy(mapTexture);
     sfSprite_destroy(mapSprite);
+
+    sfThread_destroy(mapSaveThread);
 }
 
 void GameMap_Render(sfView *view, sfRenderWindow *win){
