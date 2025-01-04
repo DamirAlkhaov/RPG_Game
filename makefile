@@ -5,6 +5,7 @@ SOURCE = src/main.c src/GameWindow.c src/GameLoop.c src/GameMap.c src/Player.c s
 
 all: $(SOURCE)
 	gcc $(INCLUDE) $(SOURCE) -o bin/game.exe -Linclude/ $(LIBFLAGS)
+	strip bin/game.exe
 
 clean:
 	rm bin/game.exe
